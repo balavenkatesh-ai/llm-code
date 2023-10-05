@@ -30,11 +30,16 @@ if st.button("Submit"):
     st.write("Generating response...")
     
     response_placeholder = st.empty()
+    
+    # template = """''SYSTEM: You are an expert in cyber security.
+    # USER: Give me list of 20 three details such as threat name, attack domain and threat description for {question} component in CSV format
+    # ASSISTANT: """
 
     # Rest of your code
-    template = """''SYSTEM: You are an expert in cyber security.
-    USER: Give me list of 20 threat name, attack domain and threat description for {question}
-    ASSISTANT: """
+    template = """You are an expert in cyber security. I am generating threat mapping CSV file.
+    write list of 20 three details such as threat name, attack domain and threat description for {question} 
+    component in CSV format.
+    """
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
@@ -50,7 +55,7 @@ if st.button("Submit"):
         callback_manager=callback_manager,
         verbose=True,
         n_ctx=4096,
-        stop=['USER:'],
+        #stop=['USER:'],
         temperature=0.1,
     )
 
@@ -70,9 +75,3 @@ if st.button("Submit"):
     #         st.write(response)
     #         time.sleep(2) 
     
-    
-# !CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.1.78 --force-reinstall --upgrade --no-cache-dir --verbose
-# !pip install huggingface_hub streamlit langchain
-# ! pip install streamlit -q
-# !wget -q -O - ipv4.icanhazip.com
-# ! streamlit run app.py & npx localtunnel --port 8501
