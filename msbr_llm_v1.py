@@ -38,7 +38,12 @@ if st.button("Submit"):
     # Rest of your code
     template = """Act as a cyber security expert.Create a list of 20 threat names, Attack domains,and threat description for the 
     given {question} component in CSV format. Each threat name should be unique and descriptive of the potential attack. The attack domain
-    should describe the type of attack(e.g., network,application,etc.). The threat description should provide a brief explanation of the potential attack."""
+    should describe the type of attack(e.g., network,application,etc.). The threat description should provide a brief explanation of the potential attack.
+    
+    For Example:
+    Threat Name,Attack Domain,Threat Description
+    SQL Injection,Web Application,An attacker can inject malicious SQL code into a web application's database queries to gain unauthorized access or manipulate data.
+    """
                 
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
