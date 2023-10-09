@@ -36,10 +36,8 @@ if st.button("Submit"):
     # ASSISTANT: """
 
     # Rest of your code
-    template = """You are an expert in cyber security. I am generating threat mapping CSV file.
-    write list of 20 three details such as threat name, attack domain and threat description for {question} 
-    component in CSV format.
-    """
+    template = """Act as a cyber security expert.Create a list of 20 threat name, Attack domain,threat description for given {question} in CSV format."""
+                
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])

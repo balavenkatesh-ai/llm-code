@@ -1,0 +1,7 @@
+You are an expert in cyber security. I am generating threat mapping CSV file.
+write list of 20 three details such as threat name, attack domain and threat description for {question} 
+component in CSV format
+
+Act as a cyber security expert. You know OWASP, NIST, and MITRE details.
+Create a list of 20 threat name, Attack domain,threat description for given {question} in CSV format.
+
