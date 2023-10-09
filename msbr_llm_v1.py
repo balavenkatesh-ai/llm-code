@@ -36,7 +36,9 @@ if st.button("Submit"):
     # ASSISTANT: """
 
     # Rest of your code
-    template = """Act as a cyber security expert.Create a list of 20 threat name, Attack domain,threat description for given {question} in CSV format."""
+    template = """Act as a cyber security expert.Create a list of 20 threat names, Attack domains,and threat description for the 
+    given {question} component in CSV format. Each threat name should be unique and descriptive of the potential attack. The attack domain
+    should describe the type of attack(e.g., network,application,etc.). The threat description should provide a brief explanation of the potential attack."""
                 
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
