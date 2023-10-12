@@ -58,6 +58,8 @@ if st.button("Generate MSBR Threat Report"):
             2. Attack Domain: Specify the category of attack, such as network or application.
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
+            
+            SYSTEM: Make sure the output is presented in CSV format. Your response should consist of 20 rows, each representing a different threat. 
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
