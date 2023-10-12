@@ -33,7 +33,7 @@ component_name = st.text_input("Enter your Threat Component Name:")
 component_version = st.text_input("Enter your Threat Component Version:")
 
 
-if st.button("Generate MSBR Threat Report"):
+if st.button("Generate MSBR Threat Report") and component_name and component_version:
     st.write("Generating response...")
     with st.spinner("Processing..."):
     
@@ -99,12 +99,13 @@ if st.button("Generate MSBR Threat Report"):
         #df = pd.DataFrame([response])
         st.markdown(response)
     #st.write(response)
-    
+else:
+    st.warning("Please provide a valid Threat Component details.") 
     
     
 llm_question = st.text_input("Ask question to LLM model:")
 
-if st.button("Call LLM model"):
+if st.button("Call LLM model") and llm_question:
     st.write("Generating response...")
     with st.spinner("Processing..."):
     
@@ -144,3 +145,5 @@ if st.button("Call LLM model"):
         response = llm_chain.run(llm_question)
         st.write("Response:")
         st.write(response)
+else:
+    st.warning("Please provide a input.") 
