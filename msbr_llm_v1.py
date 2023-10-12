@@ -6,7 +6,7 @@ from langchain import PromptTemplate, LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from huggingface_hub import hf_hub_download
-
+import pandas as pd
 
 st.title("MSBR - Threat LLM Model")
 
@@ -92,12 +92,12 @@ if st.button("Generate MSBR Threat Report"):
         response = llm_chain.run(chain_input)
         st.write("Generated MSBR LLM Threat Report:")
         # Split the response into rows and columns
-        csv_rows = [row.split(',') for row in response.strip().split('\n')]
+        # csv_rows = [row.split(',') for row in response.strip().split('\n')]
         
-        # Remove rows with "<NA>"
-        csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
-
-        st.table(csv_rows)
+        # # Remove rows with "<NA>"
+        # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
+        df = pd.DataFrame([response])
+        st.table(df)
     #st.write(response)
     
     
