@@ -49,7 +49,7 @@ if st.button("Generate MSBR Threat Report"):
 
         # Rest of your code
         template = """Act as a cyber security expert.Create a list of 20 threat names, Attack domains, threat description,and countermeasure for the 
-        given {component_name} component and version of component is {component_version}. The output format should be in CSV format. 
+        given {component_name} component and version of component is {component_version}. The output format should be in dictionary format. 
         
         Each threat name should be unique and descriptive of the potential attack. 
         The attack domain should describe the type of attack(e.g., network,application,etc.). 
@@ -57,9 +57,8 @@ if st.button("Generate MSBR Threat Report"):
         Countermeasure for corresponding threats.
         
         Sample Output:
-        Threat Name,Attack Domain,Threat Description,Countermeasure    
-        Data Manipulation,	Application,"Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	"Architecture and Design	
-        Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
+        "Threat Name" : Data Manipulation,	"Attack Domain" : Application,"Threat Description" : "Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	
+        "Countermeasure" : "Architecture and Design Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
         If a programmer believes that an attacker cannot modify certain inputs, then the programmer might not perform any input validation at all. For example, in web applications, many programmers believe that cookies and hidden form fields can not be modified from a web browser (CWE-472), although they can be altered using a proxy or a custom program. In a client-server architecture, the programmer might assume that client-side security checks cannot be bypassed, even when a custom client could be written that skips those checks (CWE-602)."
         
         """
