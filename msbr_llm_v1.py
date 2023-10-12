@@ -96,8 +96,8 @@ if st.button("Generate MSBR Threat Report"):
         
         # # Remove rows with "<NA>"
         # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
-        df = pd.DataFrame([response])
-        st.table(df)
+        #df = pd.DataFrame([response])
+        st.markdown(response)
     #st.write(response)
     
     
