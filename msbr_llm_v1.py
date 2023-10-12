@@ -49,7 +49,7 @@ if st.button("Generate MSBR Threat Report"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats in CSV Format.Additionally, please provide a reference source or details to verify the accuracy of the threat information provided.
+            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats in CSV Format.
             USER: Please provide Threat Names, Attack Domains, Threat Descriptions, and Countermeasures for the {component_name} component, version {component_version}.
                 
             To structure your data, follow these guidelines:
@@ -58,6 +58,8 @@ if st.button("Generate MSBR Threat Report"):
             2. Attack Domain: Specify the category of attack, such as network or application.
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
+            
+            Note:-Additionally, please provide a reference source or details to verify the accuracy of the threat information provided.
             
             ASSISTANT: 
             """
@@ -71,14 +73,14 @@ if st.button("Generate MSBR Threat Report"):
 
             llm = LlamaCpp(
                 model_path=model_path,
-                max_tokens=5024,
+                max_tokens=1024,
                 n_gpu_layers=n_gpu_layers,
                 n_batch=n_batch,
                 callback_manager=callback_manager,
                 verbose=True,
                 n_ctx=4096,
                 stop=['USER:'],
-                temperature=0.3,
+                temperature=0.2,
             )
 
             llm_chain = LLMChain(prompt=prompt, llm=llm)
