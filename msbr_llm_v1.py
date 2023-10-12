@@ -77,7 +77,7 @@ if st.button("Generate MSBR Threat Report"):
                 callback_manager=callback_manager,
                 verbose=True,
                 n_ctx=4096,
-                #stop=['USER:'],
+                stop=['USER:'],
                 temperature=0.1,
             )
 
