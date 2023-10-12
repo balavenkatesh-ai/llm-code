@@ -49,15 +49,15 @@ if st.button("Generate MSBR Threat Report"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """Act as a cyber security expert.Create a list of 20 threat names, Attack domains, threat description,and countermeasure for the 
-            given {component_name} component and component version is {component_version}. 
-            
-            Each threat name should be unique and descriptive of the potential attack(e.g. Data Manipulation,etc..). 
-            The attack domain should describe the type of attack(e.g., network,application,etc.). 
-            The threat description should provide a brief explanation of the potential attack(e.g. Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database,etc..).
-            Countermeasure for corresponding threats.
-            
-            The output format should be in CSV format.
+            template = """As a cyber security expert, your task is to compile a CSV list of 20 threats, each comprising unique and descriptive attributes. 
+            Specifically, you need to provide the following information for the given {component_name} component and its version is {component_version}:
+
+            1. Threat Name: A name that clearly describes the potential attack (e.g., Data Manipulation).
+            2. Attack Domain: The category of attack, such as network or application.
+            3. Threat Description: A concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.
+            4. Countermeasure: Recommendations to mitigate or counteract each threat.
+
+            Ensure that the output is in CSV format.
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
