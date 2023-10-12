@@ -56,7 +56,12 @@ if st.button("Generate MSBR Threat Report"):
         The threat description should provide a brief explanation of the potential attack.
         Countermeasure for corresponding threats.
         
-        Give me the reference details to verify the given threat details.
+        Sample Output:
+        Threat Name,Attack Domain,Threat Description,Countermeasure    
+        Data Manipulation,	Application,"Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	"Architecture and Design	
+        Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
+        If a programmer believes that an attacker cannot modify certain inputs, then the programmer might not perform any input validation at all. For example, in web applications, many programmers believe that cookies and hidden form fields can not be modified from a web browser (CWE-472), although they can be altered using a proxy or a custom program. In a client-server architecture, the programmer might assume that client-side security checks cannot be bypassed, even when a custom client could be written that skips those checks (CWE-602)."
+        
         """
                     
         prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
