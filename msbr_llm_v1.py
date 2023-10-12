@@ -59,7 +59,7 @@ if st.button("Generate MSBR Threat Report"):
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
             
-            SYSTEM: 
+            ASSISTANT: 
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
