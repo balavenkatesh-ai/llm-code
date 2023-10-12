@@ -71,14 +71,14 @@ if st.button("Generate MSBR Threat Report"):
 
             llm = LlamaCpp(
                 model_path=model_path,
-                max_tokens=1024,
+                max_tokens=5024,
                 n_gpu_layers=n_gpu_layers,
                 n_batch=n_batch,
                 callback_manager=callback_manager,
                 verbose=True,
                 n_ctx=4096,
                 stop=['USER:'],
-                temperature=0.1,
+                temperature=0.3,
             )
 
             llm_chain = LLMChain(prompt=prompt, llm=llm)
@@ -136,7 +136,7 @@ if st.button("Call LLM model") :
                 verbose=True,
                 n_ctx=4096,
                 #stop=['USER:'],
-                temperature=0.1,
+                temperature=0.3,
             )
 
             llm_chain = LLMChain(prompt=prompt, llm=llm)
