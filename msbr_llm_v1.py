@@ -49,16 +49,15 @@ if st.button("Generate MSBR Threat Report"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert.
-            USER: Your task is to compile a CSV list of 20 threats such as Threat Name, Attack Domain,Threat Description and Countermeasure
-            for the given {component_name} component and its version is {component_version}. Ensure that it should be in CSV format.
-            
-            Follow below details to prepare CSV file.
+            template = """SYSTEM: As a cyber security expert, your task is to compile a CSV list of 20 threats.
+            USER: Please provide Threat Names, Attack Domains, Threat Descriptions, and Countermeasures for the {component_name} component, version {component_version}, in CSV format.
+                
+            To structure your data, follow these guidelines:
 
-            1. Threat Name: A name that clearly describes the potential attack (e.g., Data Manipulation).
-            2. Attack Domain: The category of attack, such as network or application.
-            3. Threat Description: A concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.
-            4. Countermeasure: Recommendations to mitigate or counteract each threat.
+            1. Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
+            2. Attack Domain: Specify the category of attack, such as network or application.
+            3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
+            4. Countermeasure: Suggest recommendations to mitigate each threat.
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
