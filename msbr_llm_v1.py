@@ -49,7 +49,8 @@ if st.button("Generate MSBR Threat Report"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """As a cyber security expert, your task is to compile a CSV list of 20 threats, each comprising unique and descriptive attributes. 
+            template = """As a cyber security expert, your task is to compile a CSV list of 20 threats such as Threat Name, Attack Domain,Threat Description and Countermeasure,
+            each comprising unique and descriptive attributes. 
             Specifically, you need to provide the following information for the given {component_name} component and its version is {component_version}:
 
             1. Threat Name: A name that clearly describes the potential attack (e.g., Data Manipulation).
