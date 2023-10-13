@@ -58,7 +58,7 @@ if st.button("Generate Threat"):
             2. Attack Domain: Specify the category of attack, such as network or application.
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
-            5. Reference:Provide a reference source or details to verify the accuracy of the threat information provided.
+            5. Reference:Provide a reference source name or url to verify the accuracy of the threat information provided.
                         
             ASSISTANT: 
             """
