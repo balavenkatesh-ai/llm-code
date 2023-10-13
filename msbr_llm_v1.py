@@ -33,7 +33,7 @@ component_name = st.text_input("Enter your Threat Component Name:")
 component_version = st.text_input("Enter your Threat Component Version:")
 
 
-if st.button("Generate MSBR Threat Report"):
+if st.button("Generate Threat"):
     if component_name and component_version:
         st.write("Generating response...")
         with st.spinner("Processing..."):
