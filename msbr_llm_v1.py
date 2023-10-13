@@ -49,7 +49,7 @@ if st.button("Generate Threat"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats in CSV Format.
+            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats in table Format.
             USER: Please provide Threat Names, Attack Domains, Threat Descriptions,Countermeasures and Reference  for the {component_name} component, version {component_version}.
                 
             To structure your data, follow these guidelines:
