@@ -38,15 +38,30 @@ def select_llm() -> Union[ChatOpenAI, LlamaCpp]:
         return ChatOpenAI(temperature=temperature, model_name=model_name)
     elif model_name.startswith("llama-2-"):
         callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        
+        n_gpu_layers = 40
+        n_batch = 512
+        model_path = "llama-2-13b-chat.ggmlv3.q5_1.bin"
         return LlamaCpp(
-            model_path="llama-2-13b-chat.ggmlv3.q5_1.bin",
-            input={"temperature": temperature,
-                   "max_length": 2000,
-                   "top_p": 1
-                   },
-            callback_manager=callback_manager,
-            verbose=False,  # True
-        )
+                model_path=model_path,
+                max_tokens=2024,
+                n_gpu_layers=n_gpu_layers,
+                n_batch=n_batch,
+                callback_manager=callback_manager,
+                verbose=True,
+                n_ctx=4096,
+                stop=['USER:'],
+                temperature=0.2,
+            )
+        # return LlamaCpp(
+        #     model_path="llama-2-13b-chat.ggmlv3.q5_1.bin",
+        #     input={"temperature": temperature,
+        #            "max_length": 2000,
+        #            "top_p": 1
+        #            },
+        #     callback_manager=callback_manager,
+        #     verbose=False,  # True
+        # )
 
 
 def get_answer(llm, messages) -> tuple[str, float]:
