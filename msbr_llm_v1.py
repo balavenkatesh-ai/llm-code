@@ -49,19 +49,20 @@ if st.button("Generate Threat"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats.
-            USER: Please provide Threat Names, Attack Domains, Threat Descriptions,Countermeasures and Reference  for the {component_name} component, version {component_version}.
-                
+            template = """SYSTEM: As a cyber security expert, your task is to prepare a list of 20 threats.
+            USER: Please provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
+
             To structure your data, follow these guidelines:
 
             1. Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
             2. Attack Domain: Specify the category of attack, such as network or application.
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
-            5. Reference:Provide a reference source name or url to verify the accuracy of the threat information provided.
+            5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
+            6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
             
-            Output: Markdown format with heading and table.
-                        
+            Output: Markdown format with headings and tables.
+
             ASSISTANT: 
             """
                         
