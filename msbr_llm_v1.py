@@ -49,7 +49,7 @@ if st.button("Generate Threat"):
             # ASSISTANT: """
 
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats in table Format.
+            template = """SYSTEM: As a cyber security expert, your task is to prepare list of 20 threats.
             USER: Please provide Threat Names, Attack Domains, Threat Descriptions,Countermeasures and Reference  for the {component_name} component, version {component_version}.
                 
             To structure your data, follow these guidelines:
@@ -59,6 +59,8 @@ if st.button("Generate Threat"):
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
             5. Reference:Provide a reference source name or url to verify the accuracy of the threat information provided.
+            
+            Output: Markdown format with heading and table.
                         
             ASSISTANT: 
             """
