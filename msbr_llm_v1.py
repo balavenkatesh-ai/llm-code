@@ -11,11 +11,11 @@ import json
 
 st.title("MSBR - Threat LLM Model")
 
-# model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
-# model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"
+model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
+model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"
 
-model_name_or_path = "TheBloke/Llama-2-70B-GGUF"
-model_basename = "llama-2-70b.Q4_K_M.gguf"
+# model_name_or_path = "TheBloke/Llama-2-70B-GGUF"
+# model_basename = "llama-2-70b.Q4_K_M.gguf"
 
 def parse_llm_output(output: str) -> dict:
     try:
