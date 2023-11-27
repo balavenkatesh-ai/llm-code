@@ -1,41 +1,16 @@
-You are an expert in cyber security. I am generating threat mapping CSV file.
-write list of 20 three details such as threat name, attack domain and threat description for {question} 
-component in CSV format
+template = """SYSTEM: As a cyber security expert, your task is to prepare a list of 20 threats.
+            USER: Please provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
 
-Act as a cyber security expert. You know OWASP, NIST, and MITRE details.
-Create a list of 20 threat name, Attack domain,threat description for given {question} in CSV format.
+            To structure your data, follow these guidelines:
 
- template = """Act as a cyber security expert.Create a list of 20 threat names, Attack domains, threat description,and countermeasure for the 
-given {component_name} component and version of component is {component_version}. The output format should be in CSV format. 
+            1. Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
+            2. Attack Domain: Specify the category of attack, such as network or application.
+            3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
+            4. Countermeasure: Suggest recommendations to mitigate each threat.
+            5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
+            6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
+            
+            Output: Format the data in Markdown with appropriate headings and tables.
 
-Each threat name should be unique and descriptive of the potential attack. 
-The attack domain should describe the type of attack(e.g., network,application,etc.). 
-The threat description should provide a brief explanation of the potential attack.
-Countermeasure for corresponding threats.
-
-Sample Output:
-Threat Name,Attack Domain,Threat Description,Countermeasure    
-Data Manipulation,	Application,"Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	"Architecture and Design	
-Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
-If a programmer believes that an attacker cannot modify certain inputs, then the programmer might not perform any input validation at all. For example, in web applications, many programmers believe that cookies and hidden form fields can not be modified from a web browser (CWE-472), although they can be altered using a proxy or a custom program. In a client-server architecture, the programmer might assume that client-side security checks cannot be bypassed, even when a custom client could be written that skips those checks (CWE-602)."
-
-Finally, Give me the reference details to verify the given threat details.
-"""
-
-    Sample Output:
-"Threat Name" : Data Manipulation,	"Attack Domain" : Application,"Threat Description" : "Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	
-"Countermeasure" : "Architecture and Design Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
-If a programmer believes that an attacker cannot modify certain inputs, then the programmer might not perform any input validation at all. For example, in web applications, many programmers believe that cookies and hidden form fields can not be modified from a web browser (CWE-472), although they can be altered using a proxy or a custom program. In a client-server architecture, the programmer might assume that client-side security checks cannot be bypassed, even when a custom client could be written that skips those checks (CWE-602)."
-
-
-
-Example Output Format:
-Threat Name,Attack Domain,Threat Description,Countermeasure    
-Data Manipulation,	Application,"Attackers can modify data in MongoDB if there's a lack of proper access controls or vulnerabilities in the application using the database.",	
-"Architecture and Design Implementation REALIZATION: This weakness is caused during implementation of an architectural security tactic.
-If a programmer believes that an attacker cannot modify certain inputs, then the programmer might not perform any input validation at all. For example, in web applications, many programmers believe that cookies and hidden form fields can not be modified from a web browser (CWE-472), although they can be altered using a proxy or a custom program. In a client-server architecture, the programmer might assume that client-side security checks cannot be bypassed, even when a custom client could be written that skips those checks (CWE-602)."
-
-
-Produce 10 exemplars for sentiment analysis. Examples are categorized as either positive or negative. Produce 2 negative examples and 8 positive examples. Use this format for the examples:
-Q: <sentence>
-A: <sentiment>
+            ASSISTANT: 
+            """

@@ -7,14 +7,19 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from huggingface_hub import hf_hub_download
 import pandas as pd
+import json
 
 st.title("MSBR - Threat LLM Model")
 
 model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
 model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"
 
-# model_name_or_path = "AIDC-ai-business/Marcoroni-70B-v1"
-# model_basename = "pytorch_model-00015-of-00015.bin"
+def parse_llm_output(output: str) -> dict:
+    try:
+        return json.loads(output)
+    except json.JSONDecodeError: # Handle JSONDecodeError if the output cannot be parsed as JSON
+        st.error("The language model output could not be parsed as JSON.")
+        return {}
 
 
 # st.write("Downloading model...")
@@ -31,7 +36,7 @@ else:
 # Define your Streamlit input
 component_name = st.text_input("Enter your Threat Component Name:")
 component_version = st.text_input("Enter your Threat Component Version:")
-
+number_of_threat = st.text_input("Enter number of threat wants to generate:")
 
 if st.button("Generate Threat"):
     if component_name and component_version:
@@ -40,16 +45,8 @@ if st.button("Generate Threat"):
         
             response_placeholder = st.empty()
             
-            # template = """''SYSTEM: You are an expert in cyber security.
-            # USER: Give me list of 20 three details such as threat name, attack domain and threat description for {question} component in CSV format
-            #     For Example:
-            # Threat Name,Attack Domain,Threat Description,Countermeasure
-            # SQL Injection,Web Application,An attacker can inject malicious SQL code into a web application's database queries to gain unauthorized access or manipulate data.
-            #Note:-Additionally, please provide a reference source or details to verify the accuracy of the threat information provided.
-            # ASSISTANT: """
-
             # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare a list of 20 threats.
+            template = """SYSTEM: As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
             USER: Please provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
 
             To structure your data, follow these guidelines:
@@ -60,13 +57,13 @@ if st.button("Generate Threat"):
             4. Countermeasure: Suggest recommendations to mitigate each threat.
             5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
             6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
-            
-            Output: Markdown format with headings and tables.
+                        
+            Note:- Your output should be in the form of a markdown table with the following given above columns
 
             ASSISTANT: 
             """
                         
-            prompt = PromptTemplate(template=template, input_variables=["component_name","component_version"])
+            prompt = PromptTemplate(template=template, input_variables=["component_name","component_version","number_of_threat"])
 
             callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
@@ -89,7 +86,8 @@ if st.button("Generate Threat"):
             
             chain_input = {
             'component_name': component_name,
-            'component_version': component_version
+            'component_version': component_version,
+            'number_of_threat':number_of_threat
             }
 
             response = llm_chain.run(chain_input)
@@ -101,12 +99,20 @@ if st.button("Generate Threat"):
             # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
             #df = pd.DataFrame([response])
             st.markdown(response)
+            
+            st.download_button(label="Download Output",
+                            data=response,
+                            file_name="msbr_llm_threat_model.md",
+                            mime="text/markdown",)
         #st.write(response)
     else:
         st.warning("Please provide a valid Threat Component details.") 
         
+
+
+        
     
-llm_question = st.text_input("Ask question to LLM model:")
+llm_question = st.text_input("Ask security related question to LLM model:")
 
 if st.button("Call LLM model") :
     if llm_question:
