@@ -119,7 +119,9 @@ if st.button("Generate Threat"):
             # # Remove rows with "<NA>"
             # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
             #df = pd.DataFrame([response])
-            st.markdown(response)
+            
+            #st.markdown(response)
+            st.table(response)
             
             st.download_button(label="Download Output",
                             data=response,
