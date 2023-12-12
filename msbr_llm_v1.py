@@ -60,6 +60,10 @@ if st.button("Generate Threat"):
             2. Attack Domain: Specify the category of attack, such as network or application.
             3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
             4. Countermeasure: Suggest recommendations to mitigate each threat.
+            5. MITRE Tactics ID: Specify MITRE Tactics ID from the MITRE Website.
+            5. MITRE Tactics Description: Specify MITRE Tactics Description from the MITRE Website.
+            6. MITRE Techniques ID: Specify MITRE Techniques ID from the MITRE Website.
+            6. MITRE Techniques Description: Specify MITRE Techniques Description from the MITRE Website.
             5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
             6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
                         
