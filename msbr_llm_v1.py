@@ -60,11 +60,11 @@ if st.button("Generate Threat"):
             2.Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in {component_name} due to improper access controls or vulnerabilities in the application using the database.
             3.Attack Domain: Specify the category of attack, such as network or application.
             4.Countermeasure: Suggest recommendations to mitigate each threat.
-            5.MITRE Tactics ID: Specify the corresponding MITRE Tactics ID from the MITRE ATT&CK® framework (e.g., T1190).
+            5.MITRE Tactics ID: Specify the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/).
             6.MITRE Tactics Description: Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
-            7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID from the MITRE ATT&CK® framework (e.g., T1543).
+            7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/).
             8.MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
-            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page.
+            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(https://capec.mitre.org/).
             
             Please ensure your response is comprehensive and includes all relevant information for each identified threat.
             
@@ -87,7 +87,7 @@ if st.button("Generate Threat"):
                 verbose=True,
                 n_ctx=4096,
                 stop=['USER:'],
-                temperature=0.2,
+                temperature=0.1,
             )
 
             llm_chain = LLMChain(prompt=prompt, llm=llm)
