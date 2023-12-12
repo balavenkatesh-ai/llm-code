@@ -49,25 +49,26 @@ if st.button("Generate Threat"):
             response_placeholder = st.empty()
             
             template = """ <s>[INST] <<SYS>>
-            As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
+            Act as a cyber security expert with more than 30 years experience of threat library development for given components, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
             <</SYS>>
             
             Provide the following information for each potential threat identified in the {component_name} {component_version} security analysis:
             
             Please follow these guidelines when structuring your data:
 
-            Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
-            Attack Domain: Specify the category of attack, such as network or application.
-            Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in {component_name} due to improper access controls or vulnerabilities in the application using the database.
-            Countermeasure: Suggest recommendations to mitigate each threat.
-            MITRE Tactics ID: Specify the corresponding MITRE Tactics ID from the MITRE ATT&CK® framework (e.g., T1190).
-            MITRE Tactics Description: Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
-            MITRE Techniques ID: Specify the relevant MITRE Techniques ID from the MITRE ATT&CK® framework (e.g., T1543).
-            MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
-            CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page.
-            References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
-                        
-            Note:- Your output should be in the pandas dataframe table format with the following given above columns. [/INST]
+            1.Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
+            2.Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in {component_name} due to improper access controls or vulnerabilities in the application using the database.
+            3.Attack Domain: Specify the category of attack, such as network or application.
+            4.Countermeasure: Suggest recommendations to mitigate each threat.
+            5.MITRE Tactics ID: Specify the corresponding MITRE Tactics ID from the MITRE ATT&CK® framework (e.g., T1190).
+            6.MITRE Tactics Description: Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
+            7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID from the MITRE ATT&CK® framework (e.g., T1543).
+            8.MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
+            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page.
+            
+            Please ensure your response is comprehensive and includes all relevant information for each identified threat.
+            
+            Note:- Your output should be in the table format with the following given above columns. [/INST]
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version","number_of_threat"])
