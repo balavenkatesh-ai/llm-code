@@ -279,100 +279,100 @@ with st.expander("Threat Model", expanded=False):
     if threat_model_submit_button and not app_input:
         st.error("Please enter your application details before submitting.")
 
-# Create a collapsible section for Attack Tree
-with st.expander("Attack Tree", expanded=False):
+# # Create a collapsible section for Attack Tree
+# with st.expander("Attack Tree", expanded=False):
 
-    # Create a submit button for Attack Tree
-    attack_tree_submit_button = st.button(label="Generate Attack Tree")
+#     # Create a submit button for Attack Tree
+#     attack_tree_submit_button = st.button(label="Generate Attack Tree")
 
-    # If the Generate Attack Tree button is clicked and the user has provided an application description
-    if attack_tree_submit_button and app_input:
-        # Load the Language Model with the provided API key
-        llm = load_LLM()
+#     # If the Generate Attack Tree button is clicked and the user has provided an application description
+#     if attack_tree_submit_button and app_input:
+#         # Load the Language Model with the provided API key
+#         llm = load_LLM()
         
-        llm_chain = LLMChain(prompt=threat_model_prompt, llm=llm)
+#         llm_chain = LLMChain(prompt=threat_model_prompt, llm=llm)
             
-        chain_input = {
-        'app_type':app_type, 'authentication':authentication, 'internet_facing':internet_facing, 
-        'sensitive_data':sensitive_data, 'pam':pam, 'app_input':app_input
-        }
+#         chain_input = {
+#         'app_type':app_type, 'authentication':authentication, 'internet_facing':internet_facing, 
+#         'sensitive_data':sensitive_data, 'pam':pam, 'app_input':app_input
+#         }
         
-        with st.spinner("Generating attack tree..."):
-            raw_model_output = llm_chain.run(chain_input)
+#         with st.spinner("Generating attack tree..."):
+#             raw_model_output = llm_chain.run(chain_input)
             
-        st.write(raw_model_output)
+#         st.write(raw_model_output)
 
-        # # Format the prompt with the user-provided details
-        # prompt_with_details = attack_tree_prompt.format(app_type=app_type, authentication=authentication, internet_facing=internet_facing, sensitive_data=sensitive_data, pam=pam, app_input=app_input)
+#         # # Format the prompt with the user-provided details
+#         # prompt_with_details = attack_tree_prompt.format(app_type=app_type, authentication=authentication, internet_facing=internet_facing, sensitive_data=sensitive_data, pam=pam, app_input=app_input)
 
-        # # Show a spinner while generating the attack tree
-        # with st.spinner("Generating attack tree..."):
-        #     raw_model_output = llm(prompt_with_details)
+#         # # Show a spinner while generating the attack tree
+#         # with st.spinner("Generating attack tree..."):
+#         #     raw_model_output = llm(prompt_with_details)
 
-        #     # Parse the LLM output into a Python dictionary
-        #     model_output_dict = parse_llm_output(raw_model_output)
+#         #     # Parse the LLM output into a Python dictionary
+#         #     model_output_dict = parse_llm_output(raw_model_output)
 
-        #     # Extract the Mermaid code and improvement suggestions
-        #     mermaid_code = model_output_dict.get("mermaid_code", "No Mermaid code provided.")
-        #     improvement_suggestions = model_output_dict.get("improvement_suggestions", "No suggestions provided.")
+#         #     # Extract the Mermaid code and improvement suggestions
+#         #     mermaid_code = model_output_dict.get("mermaid_code", "No Mermaid code provided.")
+#         #     improvement_suggestions = model_output_dict.get("improvement_suggestions", "No suggestions provided.")
 
-        #     # Display the generated attack tree and improvement suggestions
-        #     st.write("Attack Tree:")
-        #     st.code(mermaid_code)
-        #     st.write("Improvement Suggestions:")
-        #     st.write(improvement_suggestions)
+#         #     # Display the generated attack tree and improvement suggestions
+#         #     st.write("Attack Tree:")
+#         #     st.code(mermaid_code)
+#         #     st.write("Improvement Suggestions:")
+#         #     st.write(improvement_suggestions)
 
-            # Add a button to allow the user to download the output as a Markdown file
-        st.download_button(
-        label="Download Attack Tree",
-        data=raw_model_output,
-        file_name="stride_gpt_attack_tree.md",
-        mime="text/markdown",
-        )
+#             # Add a button to allow the user to download the output as a Markdown file
+#         st.download_button(
+#         label="Download Attack Tree",
+#         data=raw_model_output,
+#         file_name="stride_gpt_attack_tree.md",
+#         mime="text/markdown",
+#         )
 
-        st.markdown("""
-        ### Attack Tree Visualisation
-        """)
+#         st.markdown("""
+#         ### Attack Tree Visualisation
+#         """)
 
-        # Inform the user that the Mermaid visualisation feature is experimental
-        st.info("Please note that this feature is experimental. To view the attack tree in detail and/or edit the diagram visit [Mermaid Live](https://mermaid.live) and paste the generated Mermaid code into the editor.")
+#         # Inform the user that the Mermaid visualisation feature is experimental
+#         st.info("Please note that this feature is experimental. To view the attack tree in detail and/or edit the diagram visit [Mermaid Live](https://mermaid.live) and paste the generated Mermaid code into the editor.")
 
-        # Visualise the attack tree using the Mermaid custom component
-        #mermaid(mermaid_code)
+#         # Visualise the attack tree using the Mermaid custom component
+#         #mermaid(mermaid_code)
 
-    # If the submit button is clicked and the user has not provided an application description
-    if threat_model_submit_button and not app_input:
-        st.error("Please enter your application details before submitting.")
+#     # If the submit button is clicked and the user has not provided an application description
+#     if threat_model_submit_button and not app_input:
+#         st.error("Please enter your application details before submitting.")
 
 
-# Create a collapsible section for Mitigations
-with st.expander("Mitigations", expanded=False):
-    # Create a submit button for Mitigations
-    mitigations_submit_button = st.button(label="Suggest Mitigations")
+# # Create a collapsible section for Mitigations
+# with st.expander("Mitigations", expanded=False):
+#     # Create a submit button for Mitigations
+#     mitigations_submit_button = st.button(label="Suggest Mitigations")
 
-    # If the Suggest Mitigations button is clicked and the user has provided an application description
-    if mitigations_submit_button and app_input:
-        # Load the Language Model with the provided API key
-        llm = load_LLM()
+#     # If the Suggest Mitigations button is clicked and the user has provided an application description
+#     if mitigations_submit_button and app_input:
+#         # Load the Language Model with the provided API key
+#         llm = load_LLM()
 
-        # Format the mitigations prompt with the threats from the threat model
-        prompt_with_threats = mitigations_prompt.format(threats=st.session_state["threat_table"])
+#         # Format the mitigations prompt with the threats from the threat model
+#         prompt_with_threats = mitigations_prompt.format(threats=st.session_state["threat_table"])
 
-        # Show a spinner while suggesting mitigations
-        with st.spinner("Suggesting mitigations..."):
-            model_output = llm(prompt_with_threats)
+#         # Show a spinner while suggesting mitigations
+#         with st.spinner("Suggesting mitigations..."):
+#             model_output = llm(prompt_with_threats)
 
-        # Display the suggested mitigations
-        st.write(model_output)
+#         # Display the suggested mitigations
+#         st.write(model_output)
 
-        # Add a button to allow the user to download the output as a Markdown file
-        st.download_button(
-        label="Download Mitigations",
-        data=model_output,
-        file_name="stride_gpt_mitigations.md",
-        mime="text/markdown",
-        )
+#         # Add a button to allow the user to download the output as a Markdown file
+#         st.download_button(
+#         label="Download Mitigations",
+#         data=model_output,
+#         file_name="stride_gpt_mitigations.md",
+#         mime="text/markdown",
+#         )
 
-    # If the submit button is clicked and the user has not provided an application description
-    if mitigations_submit_button and not app_input:
-        st.error("Please enter your application details before submitting.")
+#     # If the submit button is clicked and the user has not provided an application description
+#     if mitigations_submit_button and not app_input:
+#         st.error("Please enter your application details before submitting.")

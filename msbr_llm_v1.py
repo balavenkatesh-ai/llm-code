@@ -29,7 +29,7 @@ def parse_llm_output(output: str) -> dict:
 # model_path = hf_hub_download(repo_id=model_name_or_path, filename=model_basename)
 
 if os.path.exists(model_basename):
-    st.write("Using locally available model...")
+    #st.write("Using locally available model...")
     model_path = model_basename
 else:
     st.write("Downloading model...")
@@ -112,7 +112,7 @@ if st.button("Generate Threat"):
             }
 
             response = llm_chain.run(chain_input)
-            st.write("Generated MSBR LLM Threat Report:")
+            #st.write("Generated MSBR LLM Threat Report:")
             # Split the response into rows and columns
             # csv_rows = [row.split(',') for row in response.strip().split('\n')]
             
@@ -120,7 +120,7 @@ if st.button("Generate Threat"):
             # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
             #df = pd.DataFrame([response])
             
-            st.markdown(response)
+            st.write(response)
             #st.table(response)
             
             st.download_button(label="Download Output",
