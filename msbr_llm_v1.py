@@ -48,9 +48,11 @@ if st.button("Generate Threat"):
         
             response_placeholder = st.empty()
             
-            # Rest of your code
-            template = """SYSTEM: As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
-            USER: Please provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
+            template = """ <s>[INST] <<SYS>>
+            As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
+            <</SYS>>
+            
+            Provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
 
             To structure your data, follow these guidelines:
 
@@ -61,10 +63,26 @@ if st.button("Generate Threat"):
             5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
             6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
                         
-            Note:- Your output should be in the form of a markdown table with the following given above columns
-
-            ASSISTANT: 
+            Note:- Your output should be in the form of a markdown table with the following given above columns. [/INST]
             """
+            
+            # Rest of your code
+            # template = """SYSTEM: As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
+            # USER: Provide Threat Names, Attack Domains, Threat Descriptions, Countermeasures, CAPEC Reference URLs, and References for the {component_name} component, version {component_version}.
+
+            # To structure your data, follow these guidelines:
+
+            # 1. Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
+            # 2. Attack Domain: Specify the category of attack, such as network or application.
+            # 3. Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in MongoDB due to improper access controls or vulnerabilities in the application using the database.
+            # 4. Countermeasure: Suggest recommendations to mitigate each threat.
+            # 5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
+            # 6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
+                        
+            # Note:- Your output should be in the form of a markdown table with the following given above columns.
+
+            # ASSISTANT: 
+            # """
                         
             prompt = PromptTemplate(template=template, input_variables=["component_name","component_version","number_of_threat"])
 
@@ -123,14 +141,12 @@ if st.button("Call LLM model") :
         with st.spinner("Processing..."):
         
             response_placeholder = st.empty()
-            
-            # template = """''SYSTEM: You are an expert in cyber security.
-            # USER: Give me list of 20 three details such as threat name, attack domain and threat description for {question} component in CSV format
-            # ASSISTANT: """
 
-            # Rest of your code
-            template = """Act as a cyber security expert.
-            Your task is to answer the following question based on this area of knowledge {llm_question}
+            template = """ <s>[INST] <<SYS>>
+            Act as a cyber security expert.Your task is to answer the following question based on this area of knowledge.
+            <</SYS>>
+            
+            {llm_question} [/INST]
             """
                         
             prompt = PromptTemplate(template=template, input_variables=["llm_question"])
