@@ -63,7 +63,7 @@ if st.button("Generate Threat"):
             5. CAPEC Reference URL: Include the URL of the CAPEC (Common Attack Pattern Enumeration and Classification) database for each threat, linking to its CAPEC page.
             6. References: Provide reference source names or URLs to verify the accuracy of the threat information provided.
                         
-            Note:- Your output should be in the form of a pandas dataframe table with the following given above columns. [/INST]
+            Note:- Your output should be in the format of a streamlit markdown table with the following given above columns. [/INST]
             """
             
             # Rest of your code
@@ -120,8 +120,8 @@ if st.button("Generate Threat"):
             # csv_rows = [row for row in csv_rows if not all(cell.strip() == "<NA>" for cell in row)]
             #df = pd.DataFrame([response])
             
-            #st.markdown(response)
-            st.table(response)
+            st.markdown(response)
+            #st.table(response)
             
             st.download_button(label="Download Output",
                             data=response,
