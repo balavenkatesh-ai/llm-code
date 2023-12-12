@@ -9,7 +9,7 @@ from huggingface_hub import hf_hub_download
 import pandas as pd
 import json
 
-st.title("MSBR - Threat LLM Model")
+st.title("MSBR - Component Threat Library")
 
 model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
 model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"

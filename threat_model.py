@@ -146,7 +146,7 @@ def load_LLM():
     return llm
 
 
-st.title("MSBR - Threat LLM Model")
+st.title("MSBR - STRIDE threat modelling")
 
 # Function to get user input for the application description and key details
 def get_input():
