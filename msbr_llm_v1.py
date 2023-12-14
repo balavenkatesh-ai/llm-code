@@ -64,7 +64,7 @@ if st.button("Generate Threat"):
             6.MITRE Tactics Description: Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
             7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/).
             8.MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
-            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(https://capec.mitre.org/).
+            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html).
             
             Please ensure your response is comprehensive and includes all relevant information for each identified threat.
             
