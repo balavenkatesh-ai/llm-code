@@ -109,6 +109,9 @@ if st.button("Generate Threat"):
             
             st.write(response)
             #st.table(response)
+
+            with open('llm_results.txt','w') as output:
+                output.write(response)
             
             st.download_button(label="Download Output",
                             data=response,
