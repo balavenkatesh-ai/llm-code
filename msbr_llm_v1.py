@@ -111,7 +111,7 @@ if st.button("Generate Threat"):
             st.write(response)
             #st.table(response)
 
-            file_name = 'llm_results/' + str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S)) +".txt"
+            file_name = 'llm_results/' + str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
 
             with open(file_name,'w') as output:
                 output.write(response)
