@@ -6,6 +6,7 @@ from langchain import PromptTemplate, LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.output_parsers import CommaSeparatedListOutputParser
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from huggingface_hub import hf_hub_download
 import pandas as pd
 import json
@@ -36,35 +37,40 @@ if st.button("Generate Threat"):
         
             response_placeholder = st.empty()
             
+            response_schemas = [
+            ResponseSchema(name="Threat Name", description="A descriptive name for each potential threat (e.g., Data Manipulation)"),
+            ResponseSchema(
+                name="Threat Description",
+                description="Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in given component name due to improper access controls or vulnerabilities in the application using the database.",
+            ),
+            ResponseSchema(name="Attack Domain", description="Specify the category of attack, such as network or application"),
+            ResponseSchema(
+                name="Countermeasure",
+                description="Suggest recommendations to mitigate each threat",
+            ),
+            ResponseSchema(name="MITRE Tactics ID", description="Specify the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/)"),
+            ResponseSchema(
+                name="MITRE Tactics Description",
+                description="Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.",
+            ),
+            ]
+            
+            
             template = """ <s>[INST] <<SYS>>
             Act as a cyber security expert with more than 30 years experience of threat library development for given components, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
             <</SYS>>
             
-            Provide the following information for each potential threat identified in the {component_name} {component_version} security analysis:
+            Provide the following information for each potential threat identified in the {component_name} {component_version} security analysis.
             
-            Please follow these guidelines when structuring your data:
-
-            1.Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
-            2.Threat Description: Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in {component_name} due to improper access controls or vulnerabilities in the application using the database.
-            3.Attack Domain: Specify the category of attack, such as network or application.
-            4.Countermeasure: Suggest recommendations to mitigate each threat.
-            5.MITRE Tactics ID: Specify the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/).
-            6.MITRE Tactics Description: Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
-            7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/).
-            8.MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
-            9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html).
-            10.NIST Reference: Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST).
-            11.CSA-CCM Reference: Include details or guidelines from the Cloud Security Alliance Cloud Controls Matrix (CSA-CCM).
-            12.ISO27K Reference: Incorporate information or standards from the ISO/IEC 27000 series.
-            13.OWASP Reference: Integrate insights or recommendations from the Open Web Application Security Project (OWASP).
-            14.SANS Reference: Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute.
-            
-            Please ensure your response is comprehensive and includes all relevant information for each identified threat.\n{format_instructions}
+            {format_instructions}
+        
+            Please ensure your response is comprehensive and includes all relevant information for each identified threat.
             
             [/INST]
             """
             
-            output_parser = CommaSeparatedListOutputParser()
+            #output_parser = CommaSeparatedListOutputParser()
+            output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
             
             format_instructions = output_parser.get_format_instructions()
                         
@@ -113,10 +119,10 @@ if st.button("Generate Threat"):
             # with open(file_name,'w') as output:
             #     output.write(response)
             
-            st.download_button(label="Download Output",
-                            data=response,
-                            file_name="msbr_llm_threat_model.md",
-                            mime="text/markdown",)
+            # st.download_button(label="Download Output",
+            #                 data=response,
+            #                 file_name="msbr_llm_threat_model.md",
+            #                 mime="text/markdown",)
         #st.write(response)
     else:
         st.warning("Please provide a valid Threat Component details.") 
