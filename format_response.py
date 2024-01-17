@@ -60,27 +60,28 @@ if st.button("Generate Threat"):
                 description="Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework",
             ),
             ResponseSchema(name="CAPEC Reference URL", description="Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html)"),
-            ResponseSchema(
-                name="NIST Reference",
-                description="Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST)",
-            ),
-            ResponseSchema(name="CSA-CCM Reference", description="Include details or guidelines from the Cloud Security Alliance Cloud Controls Matrix (CSA-CCM)"),
-            ResponseSchema(
-                name="ISO27K Reference",
-                description="Incorporate information or standards from the ISO/IEC 27000 series.",
-            ),
-            ResponseSchema(name="OWASP Reference", description="Integrate insights or recommendations from the Open Web Application Security Project (OWASP)"),
-            ResponseSchema(
-                name="SANS Referenc",
-                description=" Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute",
-            ),
+            # ResponseSchema(
+            #     name="NIST Reference",
+            #     description="Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST)",
+            # ),
+            # ResponseSchema(name="CSA-CCM Reference", description="Include details or guidelines from the Cloud Security Alliance Cloud Controls Matrix (CSA-CCM)"),
+            # ResponseSchema(
+            #     name="ISO27K Reference",
+            #     description="Incorporate information or standards from the ISO/IEC 27000 series.",
+            # ),
+            # ResponseSchema(name="OWASP Reference", description="Integrate insights or recommendations from the Open Web Application Security Project (OWASP)"),
+            # ResponseSchema(
+            #     name="SANS Referenc",
+            #     description=" Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute",
+            # ),
             ]
             
             
             template = """ <s>[INST] <<SYS>>
             Act as a cyber security expert with more than 30 years experience of threat library development for given {component_name} {component_version}, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
-            {format_instructions}
+            
             <</SYS>>
+            {format_instructions}
             [/INST]
             """
             
