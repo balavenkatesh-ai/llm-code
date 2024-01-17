@@ -5,25 +5,16 @@ from langchain.llms import LlamaCpp
 from langchain import PromptTemplate, LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.output_parsers import CommaSeparatedListOutputParser
 from huggingface_hub import hf_hub_download
 import pandas as pd
 import json
 import datetime
-from utils import convert_to_csv
-import csv
-from io import StringIO
-
 
 st.title("MSBR - Component Threat Library")
 
 model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
 model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"
-
-# model_name_or_path = "TheBloke/Llama-2-70B-GGUF"
-# model_basename = "llama-2-70b.Q4_K_M.gguf"
-
-# st.write("Downloading model...")
-# model_path = hf_hub_download(repo_id=model_name_or_path, filename=model_basename)
 
 if os.path.exists(model_basename):
     #st.write("Using locally available model...")
@@ -68,12 +59,19 @@ if st.button("Generate Threat"):
             13.OWASP Reference: Integrate insights or recommendations from the Open Web Application Security Project (OWASP).
             14.SANS Reference: Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute.
             
-            Please ensure your response is comprehensive and includes all relevant information for each identified threat.
+            Please ensure your response is comprehensive and includes all relevant information for each identified threat.\n{format_instructions}
             
-            Note:- Your output should be in the table format with the following given above columns. [/INST]
+            [/INST]
             """
+            
+            output_parser = CommaSeparatedListOutputParser()
+            
+            format_instructions = output_parser.get_format_instructions()
                         
-            prompt = PromptTemplate(template=template, input_variables=["component_name","component_version","number_of_threat"])
+            prompt = PromptTemplate(template=template, 
+                                    input_variables=["component_name","component_version","number_of_threat"],
+                                    partial_variables={"format_instructions": format_instructions},
+                                    )
 
             callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
@@ -101,7 +99,8 @@ if st.button("Generate Threat"):
             }
 
             response = llm_chain.run(chain_input)
-            
+        
+            response = output_parser.parse(response)
             st.write(response)
             #st.table(response)
         
