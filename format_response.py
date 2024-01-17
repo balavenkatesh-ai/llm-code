@@ -56,12 +56,9 @@ if st.button("Generate Threat"):
             ]
             
             
-            template = """ <s>[INST] <<SYS>>
-            Act as a cyber security expert with more than 30 years experience of threat library development for given {component_name} {component_version}, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
-            <</SYS>>
+            template = """ 
+            Your task is to prepare a list of {number_of_threat} threats for given {component_name} {component_version}.It is very important that your responses are tailored to reflect the details you are given.
             {format_instructions}
-            
-            [/INST]
             """
             
             #output_parser = CommaSeparatedListOutputParser()
