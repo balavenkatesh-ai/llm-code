@@ -53,6 +53,27 @@ if st.button("Generate Threat"):
                 name="MITRE Tactics Description",
                 description="Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.",
             ),
+            
+             ResponseSchema(name="MITRE Techniques ID", description=" Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/)"),
+            ResponseSchema(
+                name="MITRE Techniques Description",
+                description="Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework",
+            ),
+            ResponseSchema(name="CAPEC Reference URL", description="Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html)"),
+            ResponseSchema(
+                name="NIST Reference",
+                description="Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST)",
+            ),
+            ResponseSchema(name="CSA-CCM Reference", description="Include details or guidelines from the Cloud Security Alliance Cloud Controls Matrix (CSA-CCM)"),
+            ResponseSchema(
+                name="ISO27K Reference",
+                description="Incorporate information or standards from the ISO/IEC 27000 series.",
+            ),
+            ResponseSchema(name="OWASP Reference", description="Integrate insights or recommendations from the Open Web Application Security Project (OWASP)"),
+            ResponseSchema(
+                name="SANS Referenc",
+                description=" Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute",
+            ),
             ]
             
             
@@ -105,13 +126,13 @@ if st.button("Generate Threat"):
             #st.table(response)
         
 
-            file_name = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
+            file_name = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
 
             #convert_to_csv(response,file_name)
     
             
-            # with open(file_name,'w') as output:
-            #     output.write(response)
+            with open(file_name,'w') as output:
+                output.write(response)
             
             # st.download_button(label="Download Output",
             #                 data=response,
