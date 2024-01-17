@@ -9,7 +9,9 @@ from huggingface_hub import hf_hub_download
 import pandas as pd
 import json
 import datetime
-from .utils import convert_to_csv
+from utils import convert_to_csv
+import csv
+from io import StringIO
 
 st.title("MSBR - Component Threat Library")
 
@@ -120,15 +122,46 @@ if st.button("Generate Threat"):
 
             file_name = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
 
-            convert_to_csv(response,file_name)
+            #convert_to_csv(response,file_name)
+            
+            
+            # Find the start and end indices of the table
+            start_index = response.find('| ---')
+            end_index = response.find('|', start_index + 1)
+
+            # Extract and clean the table part of the response
+            table_data = response[start_index:end_index].strip()
+
+            # Create a CSV file in-memory
+            csv_file = StringIO()
+            csv_writer = csv.writer(csv_file, delimiter=',')
+
+            # Extract rows from the table data
+            rows = table_data.split('\n|')
+            rows = [row.strip().strip('|').split('|') for row in rows if row.strip()]
+
+            # Write header and data to CSV
+            csv_writer.writerow([item.strip() for item in rows[0]])  # Header
+            for row in rows[1:]:
+                csv_writer.writerow([item.strip() for item in row])
+
+            # Save CSV to a local file
+            csv_file.seek(0)  # Move the cursor to the beginning of the StringIO object
+            with open(file_name, 'w', newline='', encoding='utf-8') as file:
+                file.write(csv_file.read())
+                
+            print(f"CSV file saved as {file_name}")
+
+            # Display a download link in the Streamlit app
+            st.markdown(f"Download the CSV file [here](sandbox:{file_name})", unsafe_allow_html=True)
             
             # with open(file_name,'w') as output:
             #     output.write(response)
             
-            st.download_button(label="Download Output",
-                            data=response,
-                            file_name="msbr_llm_threat_model.md",
-                            mime="text/markdown",)
+            # st.download_button(label="Download Output",
+            #                 data=response,
+            #                 file_name="msbr_llm_threat_model.md",
+            #                 mime="text/markdown",)
         #st.write(response)
     else:
         st.warning("Please provide a valid Threat Component details.") 
