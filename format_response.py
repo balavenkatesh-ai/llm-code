@@ -101,7 +101,7 @@ if st.button("Generate Threat"):
             response = llm_chain.run(chain_input)
         
             #response = output_parser.parse(response)
-            st.write(format_instructions)
+            st.write(response)
             #st.table(response)
         
 
