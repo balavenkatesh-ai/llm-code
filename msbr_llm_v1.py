@@ -8,6 +8,7 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from huggingface_hub import hf_hub_download
 import pandas as pd
 import json
+import datetime
 
 st.title("MSBR - Component Threat Library")
 
@@ -114,6 +115,11 @@ if st.button("Generate Threat"):
             
             st.write(response)
             #st.table(response)
+
+            file_name = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
+
+            with open(file_name,'w') as output:
+                output.write(response)
             
             st.download_button(label="Download Output",
                             data=response,
