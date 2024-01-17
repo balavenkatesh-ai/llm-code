@@ -65,6 +65,11 @@ if st.button("Generate Threat"):
             7.MITRE Techniques ID: Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/).
             8.MITRE Techniques Description: Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
             9.CAPEC Reference URL: Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html).
+            10.NIST Reference: Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST).
+            11.CSA-CCM Reference: Include details or guidelines from the Cloud Security Alliance Cloud Controls Matrix (CSA-CCM).
+            12.ISO27K Reference: Incorporate information or standards from the ISO/IEC 27000 series.
+            13.OWASP Reference: Integrate insights or recommendations from the Open Web Application Security Project (OWASP).
+            14.SANS Reference: Include relevant details or best practices from the SysAdmin, Audit, Network, Security (SANS) Institute.
             
             Please ensure your response is comprehensive and includes all relevant information for each identified threat.
             
@@ -87,7 +92,7 @@ if st.button("Generate Threat"):
                 verbose=True,
                 n_ctx=4096,
                 stop=['USER:'],
-                temperature=0.1,
+                temperature=0,
             )
 
             llm_chain = LLMChain(prompt=prompt, llm=llm)
