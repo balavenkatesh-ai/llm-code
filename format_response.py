@@ -59,11 +59,8 @@ if st.button("Generate Threat"):
             template = """ <s>[INST] <<SYS>>
             Act as a cyber security expert with more than 30 years experience of threat library development for given components, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
             <</SYS>>
-            
-            Provide the following information for each potential threat identified in the {component_name} {component_version} security analysis.
-            
             {format_instructions}
-        
+            Provide the information for each potential threat identified in the {component_name} {component_version} security analysis.
             Please ensure your response is comprehensive and includes all relevant information for each identified threat.
             
             [/INST]
