@@ -24,7 +24,7 @@ def convert_to_csv(response,csv_filename):
         csv_writer.writerow([item.strip() for item in row])
 
     # Save CSV to a local file
-    with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-        csv_file.write(csv_file.getvalue())
+    with open(csv_filename, 'w', newline='', encoding='utf-8') as file:
+        file.write(csv_file.getvalue())
 
     print(f"CSV file saved as {csv_filename}")
