@@ -126,8 +126,8 @@ if st.button("Generate Threat"):
 
             #file_name_path = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
             file_name = str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
-            csv_data = convert_to_csv(response,file_name)
-            #csv_data = json_to_csv(response)
+            #csv_data = convert_to_csv(response,file_name_path)
+            csv_data = json_to_csv(response)
     
             
             # with open(file_name_path,'w') as output:

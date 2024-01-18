@@ -34,30 +34,20 @@ import io
 def json_to_csv(response):
     """Extracts JSON data from the response and returns a CSV string in memory."""
 
-    csv_data = io.StringIO()  # Create an in-memory file-like object
+    csv_data = io.StringIO()
     writer = csv.DictWriter(csv_data, fieldnames=None)
 
-    # Extract and write JSON blocks to CSV
-    json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
-    if json_data_blocks:
-        for json_data_str in json_data_blocks:
-            try:
-                json_data = json.loads(json_data_str)
+    # Extract JSON blocks using proper JSON parsing
+    json_data_blocks = json.loads("[" + response.split("`json")[1].split("`")[0] + "]")
 
-                if not writer.fieldnames:
-                    writer.fieldnames = list(json_data.keys())
-                    writer.writeheader()
+    for json_data in json_data_blocks:
+        if not writer.fieldnames:
+            writer.fieldnames = list(json_data.keys())
+            writer.writeheader()
+        writer.writerow(json_data)
 
-                writer.writerow(json_data)
-
-            except json.JSONDecodeError:
-                print(f"Error: Invalid JSON data format in block: {json_data_str}")
-
-        csv_data.seek(0)  # Rewind the in-memory file to the beginning
-        return csv_data.read()  # Return the CSV string
-    else:
-        print("Error: No JSON data found in the response.")
-        return None  # Return None if no CSV data could be generated
+    csv_data.seek(0)
+    return csv_data.read()
         
 
 def convert_to_csv(response, csv_filename):
