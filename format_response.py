@@ -123,10 +123,10 @@ if st.button("Generate Threat"):
             st.write(response)
             #st.table(response)
         
-            file_name_path = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
+            # file_name_path = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
             
-            with open(file_name_path,'w') as output:
-                output.write(response)
+            # with open(file_name_path,'w') as output:
+            #     output.write(response)
                 
             file_name = str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
             #csv_data = convert_to_csv(response,file_name_path)
