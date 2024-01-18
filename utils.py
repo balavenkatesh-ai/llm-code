@@ -37,17 +37,24 @@ def json_to_csv(response):
     csv_data = io.StringIO()
     writer = csv.DictWriter(csv_data, fieldnames=None)
 
-    # Extract JSON blocks using proper JSON parsing
-    json_data_str = response.split("`json")[1].split("`")[0]
-    json_data_blocks = json.loads(
-        "[" + ",".join(json_data_str.split("}")[:-1]) + "}" + json_data_str.split("}")[-1]
-    )
+    # Extract JSON blocks, ensuring double quotes around property names (just in case)
+    json_blocks = re.findall(r"```json\n(.*?)\n```", response, re.DOTALL)
 
-    for json_data in json_data_blocks:
-        if not writer.fieldnames:
-            writer.fieldnames = list(json_data.keys())
-            writer.writeheader()
-        writer.writerow(json_data)
+    for json_data_str in json_blocks:
+        # Add commas between JSON objects
+        json_data_str = "[" + re.sub(r'}\s*{', '},{', json_data_str) + "]"
+
+        try:
+            # Load JSON data
+            json_data_blocks = json.loads(json_data_str)
+        except json.decoder.JSONDecodeError as e:
+            raise ValueError(f"Error decoding JSON: {e}")
+
+        for json_data in json_data_blocks:
+            if not writer.fieldnames:
+                writer.fieldnames = list(json_data.keys())
+                writer.writeheader()
+            writer.writerow(json_data)
 
     csv_data.seek(0)
     return csv_data.read()
