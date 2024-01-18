@@ -38,7 +38,10 @@ def json_to_csv(response):
     writer = csv.DictWriter(csv_data, fieldnames=None)
 
     # Extract JSON blocks using proper JSON parsing
-    json_data_blocks = json.loads("[" + response.split("`json")[1].split("`")[0] + "]")
+    json_data_str = response.split("`json")[1].split("`")[0]
+    json_data_blocks = json.loads(
+        "[" + ",".join(json_data_str.split("}")[:-1]) + "}" + json_data_str.split("}")[-1]
+    )
 
     for json_data in json_data_blocks:
         if not writer.fieldnames:
