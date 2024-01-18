@@ -1,30 +1,95 @@
+import re
+import json
 import csv
-from io import StringIO
+import io
 
-def convert_to_csv(response,csv_filename):
+# def convert_to_csv(response,csv_filename):
 
-    # Find the start and end indices of the table
-    start_index = response.find('| ---')
-    end_index = response.find('|', start_index + 1)
+#     # Extract all JSON data blocks using regular expressions
+#     json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
 
-    # Extract and clean the table part of the response
-    table_data = response[start_index:end_index].strip()
+#     if json_data_blocks:
+#         with open(csv_filename, "w", newline="") as csvfile:
+#             writer = csv.DictWriter(csvfile, fieldnames=None)  # Initialize without headers
 
-    # Create a CSV file in-memory
-    csv_file = StringIO()
-    csv_writer = csv.writer(csv_file, delimiter=',')
+#             for json_data_str in json_data_blocks:
+#                 try:
+#                     json_data = json.loads(json_data_str)
 
-    # Extract rows from the table data
-    rows = table_data.split('\n|')
-    rows = [row.strip().strip('|').split('|') for row in rows if row.strip()]
+#                     # Write headers only if not already written
+#                     if not writer.fieldnames:
+#                         writer.fieldnames = list(json_data.keys())
+#                         writer.writeheader()
 
-    # Write header and data to CSV
-    csv_writer.writerow([item.strip() for item in rows[0]])  # Header
-    for row in rows[1:]:
-        csv_writer.writerow([item.strip() for item in row])
+#                     writer.writerow(json_data)
 
-    # Save CSV to a local file
-    with open(csv_filename, 'w', newline='', encoding='utf-8') as file:
-        file.write(csv_file.getvalue())
+#                 except json.JSONDecodeError:
+#                     print(f"Error: Invalid JSON data format in block: {json_data_str}")
 
-    print(f"CSV file saved as {csv_filename}")
+#         print("CSV file created successfully!")
+#     else:
+#         print("Error: No JSON data found in the response.")
+
+
+def json_to_csv(response):
+    """Extracts JSON data from the response and returns a CSV string in memory."""
+
+    csv_data = io.StringIO()  # Create an in-memory file-like object
+    writer = csv.DictWriter(csv_data, fieldnames=None)
+
+    # Extract and write JSON blocks to CSV
+    json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
+    if json_data_blocks:
+        for json_data_str in json_data_blocks:
+            try:
+                json_data = json.loads(json_data_str)
+
+                if not writer.fieldnames:
+                    writer.fieldnames = list(json_data.keys())
+                    writer.writeheader()
+
+                writer.writerow(json_data)
+
+            except json.JSONDecodeError:
+                print(f"Error: Invalid JSON data format in block: {json_data_str}")
+
+        csv_data.seek(0)  # Rewind the in-memory file to the beginning
+        return csv_data.read()  # Return the CSV string
+    else:
+        print("Error: No JSON data found in the response.")
+        return None  # Return None if no CSV data could be generated
+        
+
+def convert_to_csv(response, csv_filename):
+    """Extracts JSON data from the response, writes it to a file, and returns a CSV string."""
+
+    with open(csv_filename, "w", newline="") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=None)
+
+        # Extract and write JSON blocks to both file and in-memory buffer
+        csv_data = io.StringIO()  # Create in-memory buffer
+        in_memory_writer = csv.DictWriter(csv_data, fieldnames=None)
+
+        json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
+        if json_data_blocks:
+            for json_data_str in json_data_blocks:
+                try:
+                    json_data = json.loads(json_data_str)
+
+                    if not writer.fieldnames:
+                        writer.fieldnames = list(json_data.keys())
+                        in_memory_writer.fieldnames = writer.fieldnames  # Copy headers
+                        writer.writeheader()
+                        in_memory_writer.writeheader()
+
+                    writer.writerow(json_data)
+                    in_memory_writer.writerow(json_data)
+
+                except json.JSONDecodeError:
+                    print(f"Error: Invalid JSON data format in block: {json_data_str}")
+
+            csv_data.seek(0)  # Rewind in-memory buffer
+            return csv_data.read()  # Return CSV string
+        else:
+            print("Error: No JSON data found in the response.")
+            return None

@@ -1,15 +1,12 @@
 import streamlit as st
-import time
 import os
 from langchain.llms import LlamaCpp
 from langchain import PromptTemplate, LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.output_parsers import CommaSeparatedListOutputParser
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from huggingface_hub import hf_hub_download
-import pandas as pd
-import json
+from utils import convert_to_csv, json_to_csv
 import datetime
 
 st.title("MSBR - Component Threat Library")
@@ -127,18 +124,20 @@ if st.button("Generate Threat"):
             #st.table(response)
         
 
-            file_name = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".txt"
-
-            #convert_to_csv(response,file_name)
+            #file_name_path = 'llm_results/' + str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
+            file_name = str(component_name) + "-" + str(component_version) + "-"+ str(datetime.datetime.now().strftime("%d_%m_%Y-%H_%M_%S")) +".csv"
+            #csv_data = convert_to_csv(response,file_name)
+            csv_data = json_to_csv(response)
     
             
-            with open(file_name,'w') as output:
-                output.write(response)
+            # with open(file_name_path,'w') as output:
+            #     output.write(response)
             
-            # st.download_button(label="Download Output",
-            #                 data=response,
-            #                 file_name="msbr_llm_threat_model.md",
-            #                 mime="text/markdown",)
+            st.download_button(label="Export",
+                            data=csv_data,
+                            file_name=file_name,
+                            mime="text/csv",
+                        )
         #st.write(response)
     else:
         st.warning("Please provide a valid Threat Component details.") 
