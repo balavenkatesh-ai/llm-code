@@ -126,7 +126,7 @@ if st.button("Generate Threat"):
 
         
     
-llm_question = st.text_input("Ask security related question to LLM model:")
+llm_question = st.text_input("Ask your question to LLM model:")
 
 if st.button("Call LLM model") :
     if llm_question:
@@ -136,7 +136,7 @@ if st.button("Call LLM model") :
             response_placeholder = st.empty()
 
             template = """ <s>[INST] <<SYS>>
-            Act as a cyber security expert.Your task is to answer the following question based on this area of knowledge.
+            Your task is to answer the following question based on this area of knowledge.
             <</SYS>>
             
             {llm_question} [/INST]
