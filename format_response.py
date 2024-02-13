@@ -35,28 +35,33 @@ if st.button("Generate Threat"):
             response_placeholder = st.empty()
             
             response_schemas = [
-            ResponseSchema(name="Threat Name", description="A descriptive name for each potential threat (e.g., Data Manipulation)"),
+            ResponseSchema(
+                name="Threat Name", description="A descriptive name for each potential threat (e.g., Data Manipulation)"),
             ResponseSchema(
                 name="Threat Description",
                 description="Offer a concise explanation of the potential attack. For example, describe how attackers can manipulate data in given component name due to improper access controls or vulnerabilities in the application using the database.",
             ),
-            ResponseSchema(name="Attack Domain", description="Specify the category of attack, such as network or application"),
+            ResponseSchema(
+                name="Attack Domain", description="Specify the category of attack, such as network or application"),
             ResponseSchema(
                 name="Countermeasure",
                 description="Suggest recommendations to mitigate each threat",
             ),
-            ResponseSchema(name="MITRE Tactics ID", description="Specify the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/)"),
+            ResponseSchema(
+                name="MITRE Tactics ID", description="Specify the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/)"),
             ResponseSchema(
                 name="MITRE Tactics Description",
                 description="Provide a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.",
             ),
             
-             ResponseSchema(name="MITRE Techniques ID", description=" Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/)"),
+             ResponseSchema(
+                 name="MITRE Techniques ID", description=" Specify the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/)"),
             ResponseSchema(
                 name="MITRE Techniques Description",
                 description="Offer a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework",
             ),
-            ResponseSchema(name="CAPEC Reference URL", description="Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html)"),
+            ResponseSchema(
+                name="CAPEC Reference URL", description="Include the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page(e.g.,https://capec.mitre.org/data/definitions/1000.html)"),
             # ResponseSchema(
             #     name="NIST Reference",
             #     description="Provide relevant information or recommendations from the National Institute of Standards and Technology (NIST)",
