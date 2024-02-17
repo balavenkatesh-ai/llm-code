@@ -150,46 +150,46 @@ if st.button("Generate Threat"):
 
         
     
-llm_question = st.text_input("Ask security related question to LLM model:")
+# llm_question = st.text_input("Ask security related question to LLM model:")
 
-if st.button("Call LLM model") :
-    if llm_question:
-        st.write("Generating response...")
-        with st.spinner("Processing..."):
+# if st.button("Call LLM model") :
+#     if llm_question:
+#         st.write("Generating response...")
+#         with st.spinner("Processing..."):
         
-            response_placeholder = st.empty()
+#             response_placeholder = st.empty()
 
-            template = """ <s>[INST] <<SYS>>
-            Act as a cyber security expert.Your task is to answer the following question based on this area of knowledge.
-            <</SYS>>
+#             template = """ <s>[INST] <<SYS>>
+#             Act as a cyber security expert.Your task is to answer the following question based on this area of knowledge.
+#             <</SYS>>
             
-            {llm_question} [/INST]
-            """
+#             {llm_question} [/INST]
+#             """
                         
-            prompt = PromptTemplate(template=template, input_variables=["llm_question"])
+#             prompt = PromptTemplate(template=template, input_variables=["llm_question"])
 
-            callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+#             callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
-            n_gpu_layers = 40
-            n_batch = 512
+#             n_gpu_layers = 40
+#             n_batch = 512
 
-            llm = LlamaCpp(
-                model_path=model_path,
-                max_tokens=1024,
-                n_gpu_layers=n_gpu_layers,
-                n_batch=n_batch,
-                callback_manager=callback_manager,
-                verbose=True,
-                n_ctx=4096,
-                #stop=['USER:'],
-                temperature=0.3,
-            )
+#             llm = LlamaCpp(
+#                 model_path=model_path,
+#                 max_tokens=1024,
+#                 n_gpu_layers=n_gpu_layers,
+#                 n_batch=n_batch,
+#                 callback_manager=callback_manager,
+#                 verbose=True,
+#                 n_ctx=4096,
+#                 #stop=['USER:'],
+#                 temperature=0.3,
+#             )
 
-            llm_chain = LLMChain(prompt=prompt, llm=llm)
+#             llm_chain = LLMChain(prompt=prompt, llm=llm)
             
 
-            response = llm_chain.run(llm_question)
-            st.write("Response:")
-            st.write(response)
-    else:
-        st.warning("Please provide a input.") 
+#             response = llm_chain.run(llm_question)
+#             st.write("Response:")
+#             st.write(response)
+#     else:
+#         st.warning("Please provide a input.") 
