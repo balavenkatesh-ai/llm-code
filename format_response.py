@@ -18,7 +18,7 @@ if os.path.exists(model_basename):
     #st.write("Using locally available model...")
     model_path = model_basename
 else:
-    st.write("Downloading model...")
+    #st.write("Downloading model...")
     model_path = hf_hub_download(repo_id=model_name_or_path, filename=model_basename)
 
 
