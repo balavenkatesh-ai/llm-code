@@ -61,6 +61,9 @@ if authentication_status == None:
 
 
 if authentication_status:
+    
+    st.sidebar.title(f"Welcome {name}")
+    authenticator.logout("Logout", "sidebar")
     # Define your Streamlit input
     component_name = st.text_input("Enter your Threat Component Name:")
     component_version = st.text_input("Enter your Threat Component Version:")
