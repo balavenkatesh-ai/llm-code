@@ -284,8 +284,8 @@ if authentication_status:
                 #csv_data = convert_to_csv(response,file_name_path)
                 csv_data = json_to_csv(response)
                 
-                with open(file_name,'w') as output:
-                    output.write(csv_data)
+                # with open(file_name,'w') as output:
+                #     output.write(csv_data)
                 
                 st.download_button(label="Export",
                                 data=csv_data,
