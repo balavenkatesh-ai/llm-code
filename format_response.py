@@ -251,13 +251,13 @@ if authentication_status:
 
                 llm = LlamaCpp(
                     model_path=model_path,
-                    max_tokens=2024,
+                    max_tokens=4096,
                     n_gpu_layers=n_gpu_layers,
                     n_batch=n_batch,
                     callback_manager=callback_manager,
                     verbose=True,
                     n_ctx=4096,
-                    stop=['USER:'],
+                    #stop=['USER:'],
                     temperature=0,
                 )
 
@@ -284,8 +284,8 @@ if authentication_status:
                 #csv_data = convert_to_csv(response,file_name_path)
                 csv_data = json_to_csv(response)
                 
-                # with open(file_name,'w') as output:
-                #     output.write(csv_data)
+                with open(file_name,'w') as output:
+                    output.write(csv_data)
                 
                 st.download_button(label="Export",
                                 data=csv_data,
