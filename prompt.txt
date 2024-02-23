@@ -20,9 +20,22 @@ template = """ <s>[INST] <<SYS>>
             Note:- Your output should be in the pandas dataframe table format with the following given above columns. [/INST]
             """
 
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+Act as a cyber security expert with more than 30 years experience of threat library development for given ngnix 1.23 version, your task is to prepare a list of 5 threats.It is very important that your responses are tailored to reflect the details you are given.
+
+Threat Name: A descriptive name for each potential threat (e.g., Data Manipulation).
+Threat Description: Offers a concise explanation of the potential attack. For example, describe how attackers can manipulate data in a given component due to improper access controls or vulnerabilities in the application using the database.
+Attack Domain: Specifies the category of attack, such as network or application.
+Countermeasure: Suggests recommendations to mitigate each threat.
+NIST Reference: Provides relevant information or recommendations from the National Institute of Standards and Technology (NIST).
+ASVS Reference: Reference to the OWASP Application Security Verification Standard (ASVS).
+OWASP Reference: Reference to the Open Web Application Security Project (OWASP).
+SANS Reference: Reference to the SANS Institute, a leading organization in cybersecurity education and training.
+CIS Reference: Reference to the Center for Internet Security (CIS), a nonprofit organization that provides cybersecurity resources and best practices.
+MITRE Tactics ID: Specifies the corresponding MITRE Tactics ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/tactics/TA0043/).
+MITRE Tactics Description: Provides a brief description of the MITRE Tactics ID from the MITRE ATT&CK® framework.
+MITRE Techniques ID: Specifies the relevant MITRE Techniques ID URL from the MITRE ATT&CK® framework (e.g., https://attack.mitre.org/techniques/T1548/).
+MITRE Techniques Description: Offers a concise explanation of the MITRE Techniques ID from the MITRE ATT&CK® framework.
+CAPEC Reference URL: Includes the URL of the Common Attack Pattern Enumeration and Classification (CAPEC) database entry for each threat, linking to its CAPEC page (e.g., https://capec.mitre.org/data/definitions/1000.html).
+
+
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main

@@ -227,7 +227,7 @@ if authentication_status:
 
             
                 template = """ <s>[INST] <<SYS>>
-                Act as a cyber security expert with more than 30 years experience of threat library development for given {component_name} {component_version}, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
+                Act as a cyber security expert with more than 30 years experience of threat library development for given {component_name} {component_version} version, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
                 
                 <</SYS>>
                 {format_instructions}
