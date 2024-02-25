@@ -39,3 +39,8 @@ CAPEC Reference URL: Includes the URL of the Common Attack Pattern Enumeration a
 
 
 docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+
+Stride GPT example
+
+A web application that allows users to create, store, and share personal notes. 
+The application is built using the React frontend framework and a Node.js backend with a MongoDB database. Users can sign up for an account and log in using OAuth2 with Google or Facebook. The notes are encrypted at rest and are only accessible by the user who created them. The application also supports real-time collaboration on notes with other users.
