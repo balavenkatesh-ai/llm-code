@@ -120,10 +120,8 @@ def load_LLM():
     model_name_or_path = "TheBloke/Llama-2-13B-chat-GGML"
     model_basename = "llama-2-13b-chat.ggmlv3.q5_1.bin"
     if os.path.exists(model_basename):
-        st.write("Using locally available model...")
         model_path = model_basename
     else:
-        st.write("Downloading model...")
         model_path = hf_hub_download(repo_id=model_name_or_path, filename=model_basename)
         
     callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
@@ -146,7 +144,7 @@ def load_LLM():
     return llm
 
 
-st.title("MSBR - STRIDE threat modelling")
+st.title("AI - STRIDE Threat Modelling")
 
 # Function to get user input for the application description and key details
 def get_input():
