@@ -44,3 +44,12 @@ Stride GPT example
 
 A web application that allows users to create, store, and share personal notes. 
 The application is built using the React frontend framework and a Node.js backend with a MongoDB database. Users can sign up for an account and log in using OAuth2 with Google or Facebook. The notes are encrypted at rest and are only accessible by the user who created them. The application also supports real-time collaboration on notes with other users.
+
+Application Name is Credit Information Management Solutions.
+Application will be hosted on Red Hat Enterprise Linux RHEL 8x server.
+Frontend will be deployed on Apache httpd Web Server and backend will deployed on Red Hat JBoss Web Server TOMCAT 5x.
+Kong API gateway will be used as an API Gateway to expose the APIs to the UI. All the 
+Java will be used as backend technology, and React will be used as Front end technology.
+This application will be used as internal application and it will not be exposed to internet.
+All of the inbound traffic will be exposed as https endpoints.
+Few outbound requests uses wss (webs sockets), jms and https to fetch information other systems.
