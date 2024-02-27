@@ -1,62 +1,49 @@
 
-import requests
-import json
-import pandas as pd
-from datetime import datetime
-
-# Step 1: Pass Component Name Dynamically to the Prompt Text
-component_name = "<COMPONENT_NAME>"
-prompt_text = f"Act as a cyber security expert with the experience of threat library development for given {component_name} components, your task is to prepare a list of 10 threats. It is very important that your responses are tailored to reflect the details you are given. Threat Name: A concise and descriptive name for the specific threat or attack scenario being analyzed. Attack Domain: The specific area or aspect of the system, application, or network targeted by the threat. Threat Description: A detailed explanation of the nature and characteristics of the threat, including how it operates and its potential impact. CAPEC Reference: Reference to relevant entries in the Common Attack Pattern Enumeration and Classification (CAPEC) database, providing additional context and information about known attack patterns. Countermeasure: Strategies, techniques, or security controls implemented to mitigate or prevent the identified threat. MITRE Tactic ID: Unique identifier assigned by MITRE for the tactic associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Tactic Description: Description of the tactic associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Technique ID: Unique identifier assigned by MITRE for the technique associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Technique Description: Description of the technique associated with the threat, as defined in the MITRE ATT&CK framework. Severity: Assessment of the potential impact or harm caused by the threat, typically categorized as low, medium, or high severity. Likelihood: Assessment of the probability or likelihood of the threat being realized, often categorized as low, medium, or high likelihood. Programming Threat Vectors: Specific programming-related vulnerabilities or weaknesses exploited by the threat. Social Engineering Threat Vectors: Techniques or methods involving manipulation of individuals to gain unauthorized access or information. L4 Control: Layer 4 control measures, such as firewall rules or network segmentation, implemented to detect or mitigate the threat. CAPEC ID: Unique identifier assigned by the CAPEC database for the attack pattern associated with the threat. CWE ID: Unique identifier assigned by the Common Weakness Enumeration (CWE) database for any weaknesses or vulnerabilities exploited by the threat. Threat Vector: The method or means by which the threat is delivered or propagated within the system or network. Component Name: The specific component or element of the system or application targeted by the threat. Component Type: The type or category of the component targeted by the threat, such as network, application, or user interface. Domain: The broader domain or area of expertise to which the threat pertains, such as cybersecurity, software development, or network security."
-payload = json.dumps({
-  "model": "llama2",
-  "prompt": prompt_text,
-  "stream": False,
-  "format": "json"
-})
-headers = {
-  'Content-Type': 'application/json'
+{
+"threat_1": {
+"Threat Name": "UnAuthenticated Access to Sensitive Data",
+"Attack Domain": "Web Application",
+"Threat Description": "An attacker exploits a vulnerability in the web application's authentication mechanism to gain unauthorized access to sensitive data, such as user credentials or financial information.",
+"CAPEC Reference": "CAPEC-264",
+"Countermeasure": "Implement secure authentication mechanisms, such as multi-factor authentication and role-based access control, to prevent unauthorized access to sensitive data.",
+"MITRE Tactic ID": "T1059",
+"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
+"MITRE Technique ID": "T1059.002",
+"MITRE Technique Description": "Using a vulnerability in the authentication mechanism to gain unauthorized access to systems, networks, or applications.",
+"Severity": "High",
+"Likelihood": "Medium"
+},
+"threat_2": {
+"Threat Name": "SQL Injection Attack on JBoss AS",
+"Attack Domain": "Web Application",
+"Threat Description": "An attacker exploits a vulnerability in the web application's SQL injection mechanism to execute arbitrary SQL commands and potentially access sensitive data, such as user credentials or financial information.",
+"CAPEC Reference": "CAPEC-265",
+"Countermeasure": "Implement secure SQL injection mechanisms, such as parameterized queries and input validation, to prevent arbitrary SQL commands from being executed.",
+"MITRE Tactic ID": "T1059",
+"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
+"MITRE Technique ID": "T1059.003",
+"MITRE Technique Description": "Exploiting a vulnerability in the SQL injection mechanism to execute arbitrary SQL commands and potentially access sensitive data.",
+"Severity": "High",
+"Likelihood": "Medium"
+},
+"threat_3": {
+"Threat Name": "Malware Infection of JBoss AS",
+"Attack Domain": "System Component",
+"Threat Description": "An attacker exploits a vulnerability in the JBoss AS software to inject malware, such as a backdoor or remote access tool, which can potentially lead to unauthorized access to sensitive data or systems.",
+"CAPEC Reference": "CAPEC-266",
+"Countermeasure": "Implement security measures, such as regular software updates and intrusion detection systems, to prevent malware infections.",
+"MITRE Tactic ID": "T1059",
+"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
+"MITRE Technique ID": "T1059.004",
+"MITRE Technique Description": "Exploiting a vulnerability in the JBoss AS software to inject malware and potentially lead to unauthorized access to sensitive data or systems.",
+"Severity": "High",
+"Likelihood": "Medium"
 }
-
-model_response = requests.post(model_url, headers=headers, data=payload).json()
-
-# Step 2: Get All Response Key Data in Pandas DataFrame
-df = pd.DataFrame(model_response['response']['data'])
-
-# Step 3: Get All Countermeasure Details from the DataFrame
-countermeasures = df['Countermeasure'].tolist()
-
-# Step 4: Pass Countermeasures to Second API to Get ICS ID and SCB ICS Domain
-for countermeasure in countermeasures:
-    url = f"http://10.16.1.10:8000/api/get_ics_details?input_text={countermeasure}"
-    response = requests.get(url).json()
-    ics_id = response['result'][0]['payload']['ics_id']
-    scb_ics_domain = response['result'][0]['payload']['scb_ics_domain']
-    # Append ICS ID and SCB ICS Domain to DataFrame
-    df.loc[df['Countermeasure'] == countermeasure, 'ICS ID'] = ics_id
-    df.loc[df['Countermeasure'] == countermeasure, 'SCB ICS Domain'] = scb_ics_domain
-
-# Step 5: Add New Column 'is_generated_by_llm' and 'Threat ID'
-df['is_generated_by_llm'] = 'yes'
-df['Threat ID'] = df['Component Name'] + '_LLM_001'
-
-# Step 6: Save DataFrame as CSV with Current Path and Timestamp
-current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-csv_file_path = f"{current_datetime}_{component_name}.csv"
-df.to_csv(csv_file_path, index=False)
-
-# Step 7: Convert DataFrame to JSON Response
-json_response = df.to_json(orient="records")
-
-# Print JSON Response
-print(json_response)
-
-
-
-
-
-
-
-
+}
+Traceback (most recent call last):
+  File "app.py", line 26, in <module>
+    threat_details = list(model_response['response']['threat_1'])
+TypeError: string indices must be integers
 
 
 {
