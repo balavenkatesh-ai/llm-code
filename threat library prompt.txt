@@ -1,5 +1,5 @@
 
-
+podman run -d -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage_v1:/qdrant/storage qdrant/qdrant:v1.7.3
 
 
 { "Threat Name": "RabbitMQ Buffer Overflow",
