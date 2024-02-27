@@ -59,7 +59,68 @@ print(json_response)
 
 
 
-
+{
+"threat": {
+"name": "Uncontrolled File Upload",
+"attack_domain": "Web Application",
+"threat_description": "An attacker is able to upload a file to the web application without proper validation or sanitization, potentially leading to unauthorized access or data tampering.",
+"capec_reference": "A104:2016 - Uncontrolled File Upload",
+"countermeasure": "Implement proper input validation and sanitization techniques to prevent unauthorized file uploads.",
+"mitre_tactic_id": "T1059",
+"mitre_tactic_description": "File-based attacks",
+"mitre_technique_id": "T1134",
+"mitre_technique_description": "Uploading a file to a web application",
+"severity": "High",
+"likelihood": "Medium",
+"programming_threat_vectors": ["Input Validation"],
+"social_engineering_threat_vectors": [],
+"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
+"capec_id": "A104",
+"cwe_id": "CWE-20:Input Validation"
+},
+"threat": {
+"name": "SQL Injection",
+"attack_domain": "Web Application",
+"threat_description": "An attacker is able to inject malicious SQL code into a web application's database, potentially leading to unauthorized access or data tampering.",
+"capec_reference": "A103:2016 - SQL Injection",
+"countermeasure": "Implement proper input validation and sanitization techniques to prevent SQL injection attacks.",
+"mitre_tactic_id": "T1059",
+"mitre_tactic_description": "File-based attacks",
+"mitre_technique_id": "T1215",
+"mitre_technique_description": "SQL Injection",
+"severity": "High",
+"likelihood": "Medium",
+"programming_threat_vectors": ["Input Validation"],
+"social_engineering_threat_vectors": [],
+"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
+"capec_id": "A103",
+"cwe_id": "CWE-89:SQL Injection"
+},
+"threat": {
+"name": "Cross-Site Scripting (XSS)",
+"attack_domain": "Web Application",
+"threat_description": "An attacker is able to inject malicious code into a web application, potentially leading to unauthorized access or data tampering.",
+"capec_reference": "A102:2016 - Cross-Site Scripting (XSS)",
+"countermeasure": "Implement proper input validation and sanitization techniques to prevent XSS attacks.",
+"mitre_tactic_id": "T1059",
+"mitre_tactic_description": "File-based attacks",
+"mitre_technique_id": "T1204",
+"mitre_technique_description": "Cross-Site Scripting (XSS)",
+"severity": "High",
+"likelihood": "Medium",
+"programming_threat_vectors": ["Input Validation"],
+"social_engineering_threat_vectors": [],
+"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
+"capec_id": "A102",
+"cwe_id": "CWE-75:Cross-Site Scripting (XSS)"
+}
+}
+Traceback (most recent call last):
+  File "app.py", line 27, in <module>
+    df = pd.DataFrame(model_response['response'])
+  File "/home/azureuser/.local/lib/python3.8/site-packages/pandas/core/frame.py", line 817, in __init__
+    raise ValueError("DataFrame constructor not properly called!")
+ValueError: DataFrame constructor not properly called!
 
 
 
