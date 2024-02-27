@@ -10,7 +10,7 @@ app = FastAPI()
 class ComponentRequest(BaseModel):
     component_name: str
 
-@app.post("/generate_threats")
+@app.post("api/generate_ai_threats")
 async def generate_threats(component: ComponentRequest):
     component_name = component.component_name
     
