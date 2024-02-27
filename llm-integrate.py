@@ -1,114 +1,64 @@
 
-{
-"threat_1": {
-"Threat Name": "UnAuthenticated Access to Sensitive Data",
-"Attack Domain": "Web Application",
-"Threat Description": "An attacker exploits a vulnerability in the web application's authentication mechanism to gain unauthorized access to sensitive data, such as user credentials or financial information.",
-"CAPEC Reference": "CAPEC-264",
-"Countermeasure": "Implement secure authentication mechanisms, such as multi-factor authentication and role-based access control, to prevent unauthorized access to sensitive data.",
-"MITRE Tactic ID": "T1059",
-"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
-"MITRE Technique ID": "T1059.002",
-"MITRE Technique Description": "Using a vulnerability in the authentication mechanism to gain unauthorized access to systems, networks, or applications.",
-"Severity": "High",
-"Likelihood": "Medium"
-},
-"threat_2": {
-"Threat Name": "SQL Injection Attack on JBoss AS",
-"Attack Domain": "Web Application",
-"Threat Description": "An attacker exploits a vulnerability in the web application's SQL injection mechanism to execute arbitrary SQL commands and potentially access sensitive data, such as user credentials or financial information.",
-"CAPEC Reference": "CAPEC-265",
-"Countermeasure": "Implement secure SQL injection mechanisms, such as parameterized queries and input validation, to prevent arbitrary SQL commands from being executed.",
-"MITRE Tactic ID": "T1059",
-"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
-"MITRE Technique ID": "T1059.003",
-"MITRE Technique Description": "Exploiting a vulnerability in the SQL injection mechanism to execute arbitrary SQL commands and potentially access sensitive data.",
-"Severity": "High",
-"Likelihood": "Medium"
-},
-"threat_3": {
-"Threat Name": "Malware Infection of JBoss AS",
-"Attack Domain": "System Component",
-"Threat Description": "An attacker exploits a vulnerability in the JBoss AS software to inject malware, such as a backdoor or remote access tool, which can potentially lead to unauthorized access to sensitive data or systems.",
-"CAPEC Reference": "CAPEC-266",
-"Countermeasure": "Implement security measures, such as regular software updates and intrusion detection systems, to prevent malware infections.",
-"MITRE Tactic ID": "T1059",
-"MITRE Tactic Description": "Using stolen or manipulated credentials to gain unauthorized access to systems, networks, or applications.",
-"MITRE Technique ID": "T1059.004",
-"MITRE Technique Description": "Exploiting a vulnerability in the JBoss AS software to inject malware and potentially lead to unauthorized access to sensitive data or systems.",
-"Severity": "High",
-"Likelihood": "Medium"
-}
-}
-Traceback (most recent call last):
-  File "app.py", line 26, in <module>
-    threat_details = list(model_response['response']['threat_1'])
-TypeError: string indices must be integers
+import requests
+import json
+import pandas as pd
+from datetime import datetime
 
+component_name = "Jboss"
 
-{
-"threat": {
-"name": "Uncontrolled File Upload",
-"attack_domain": "Web Application",
-"threat_description": "An attacker is able to upload a file to the web application without proper validation or sanitization, potentially leading to unauthorized access or data tampering.",
-"capec_reference": "A104:2016 - Uncontrolled File Upload",
-"countermeasure": "Implement proper input validation and sanitization techniques to prevent unauthorized file uploads.",
-"mitre_tactic_id": "T1059",
-"mitre_tactic_description": "File-based attacks",
-"mitre_technique_id": "T1134",
-"mitre_technique_description": "Uploading a file to a web application",
-"severity": "High",
-"likelihood": "Medium",
-"programming_threat_vectors": ["Input Validation"],
-"social_engineering_threat_vectors": [],
-"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
-"capec_id": "A104",
-"cwe_id": "CWE-20:Input Validation"
-},
-"threat": {
-"name": "SQL Injection",
-"attack_domain": "Web Application",
-"threat_description": "An attacker is able to inject malicious SQL code into a web application's database, potentially leading to unauthorized access or data tampering.",
-"capec_reference": "A103:2016 - SQL Injection",
-"countermeasure": "Implement proper input validation and sanitization techniques to prevent SQL injection attacks.",
-"mitre_tactic_id": "T1059",
-"mitre_tactic_description": "File-based attacks",
-"mitre_technique_id": "T1215",
-"mitre_technique_description": "SQL Injection",
-"severity": "High",
-"likelihood": "Medium",
-"programming_threat_vectors": ["Input Validation"],
-"social_engineering_threat_vectors": [],
-"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
-"capec_id": "A103",
-"cwe_id": "CWE-89:SQL Injection"
-},
-"threat": {
-"name": "Cross-Site Scripting (XSS)",
-"attack_domain": "Web Application",
-"threat_description": "An attacker is able to inject malicious code into a web application, potentially leading to unauthorized access or data tampering.",
-"capec_reference": "A102:2016 - Cross-Site Scripting (XSS)",
-"countermeasure": "Implement proper input validation and sanitization techniques to prevent XSS attacks.",
-"mitre_tactic_id": "T1059",
-"mitre_tactic_description": "File-based attacks",
-"mitre_technique_id": "T1204",
-"mitre_technique_description": "Cross-Site Scripting (XSS)",
-"severity": "High",
-"likelihood": "Medium",
-"programming_threat_vectors": ["Input Validation"],
-"social_engineering_threat_vectors": [],
-"l4_control": "Firewall rules or network segmentation to detect and mitigate the threat",
-"capec_id": "A102",
-"cwe_id": "CWE-75:Cross-Site Scripting (XSS)"
-}
-}
-Traceback (most recent call last):
-  File "app.py", line 27, in <module>
-    df = pd.DataFrame(model_response['response'])
-  File "/home/azureuser/.local/lib/python3.8/site-packages/pandas/core/frame.py", line 817, in __init__
-    raise ValueError("DataFrame constructor not properly called!")
-ValueError: DataFrame constructor not properly called!
+model_url = "http://10.16.1.10:11434/api/generate"
 
+prompt_text = f"Act as a cyber security expert with the experience of threat library development. your task is to generate 8 threat details for for given {component_name} components as per requirement.It is very important that your responses should be json format(eg.key should be threat_1,threat_2). Threat Name: A concise and descriptive name for the specific threat or attack scenario being analyzed. Attack Domain: The specific area or aspect of the system, application, or network targeted by the threat. Threat Description: A detailed explanation of the nature and characteristics of the threat, including how it operates and its potential impact. CAPEC Reference: Reference to relevant entries in the Common Attack Pattern Enumeration and Classification (CAPEC) database, providing additional context and information about known attack patterns. Countermeasure: Strategies, or techniques, or security controls implemented to mitigate or prevent the identified threat, should be string. MITRE Tactic ID: Unique identifier assigned by MITRE for the tactic associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Tactic Description: Description of the tactic associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Technique ID: Unique identifier assigned by MITRE for the technique associated with the threat, as defined in the MITRE ATT&CK framework. MITRE Technique Description: Description of the technique associated with the threat, as defined in the MITRE ATT&CK framework. Severity: Assessment of the potential impact or harm caused by the threat, typically categorized as low, medium, or high severity. Likelihood: Assessment of the probability or likelihood of the threat being realized, often categorized as low, medium, or high likelihood. Programming Threat Vectors: Specific programming-related vulnerabilities or weaknesses exploited by the threat. Social Engineering Threat Vectors: Techniques or methods involving manipulation of individuals to gain unauthorized access or information. L4 Control: Layer 4 control measures, such as firewall rules or network segmentation, implemented to detect or mitigate the threat. CAPEC ID: Unique identifier assigned by the CAPEC database for the attack pattern associated with the threat. CWE ID: Unique identifier assigned by the Common Weakness Enumeration (CWE) database for any weaknesses or vulnerabilities exploited by the threat. Threat Vector: The method or means by which the threat is delivered or propagated within the system or network. Component Name: The specific component or element of the system or application targeted by the threat. Component Type: The type or category of the component targeted by the threat, such as network, application, or user interface. Domain: The broader domain or area of expertise to which the threat pertains, such as cybersecurity, software development, or network security."
+payload = json.dumps({
+  "model": "llama2",
+  "prompt": prompt_text,
+  "stream": False,
+  "format": "json"
+})
+headers = {
+  'Content-Type': 'application/json'
+}
+
+model_response = requests.post(model_url, headers=headers, data=payload).json()
+
+#print(model_response['response'])
+
+response = model_response['response']
+response_data  = json.loads(model_response['response'])
+#threat_details = [response[threat_key] for threat_key in response]
+
+df = pd.DataFrame(response_data.values())
+
+#print(df)
+print(df.iloc[:,4])
+countermeasures = df.iloc[:,4].tolist()
+
+# Pass Countermeasures to Second API to Get ICS ID and SCB ICS Domain
+for countermeasure in countermeasures:
+    url = f"http://10.16.1.10:8000/api/get_ics_details?input_text={countermeasure}"
+    response = requests.get(url).json()
+    ics_id = response['result'][0]['payload']['ics_id']
+    scb_ics_domain = response['result'][0]['payload']['scb_ics_domain']
+    # Append ICS ID and SCB ICS Domain to DataFrame
+    df['ICS ID'] = ics_id
+    df['SCB ICS Domain'] = scb_ics_domain
+    #df.loc[df['countermeasure'] == countermeasure, 'ICS ID'] = ics_id
+    #df.loc[df['countermeasure'] == countermeasure, 'SCB ICS Domain'] = scb_ics_domain
+
+# Add New Column 'is_generated_by_llm' and 'Threat ID'
+df['is_generated_by_llm'] = 'yes'
+df['Threat ID'] = component_name + '_LLM_001'
+
+# Save DataFrame as CSV with Current Path and Timestamp
+current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+csv_file_path = f"{current_datetime}_{component_name}.csv"
+df.to_csv(csv_file_path, index=False)
+
+#Convert DataFrame to JSON Response
+json_response = df.to_json(orient="records")
+
+# Print JSON Response
+print(json_response)
 
 
 
