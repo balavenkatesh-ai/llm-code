@@ -1,3 +1,27 @@
+Threat name
+attack domain
+Threat description
+capec Reference
+countermeasure
+mitre_tactic_id
+mitre_tactic_description
+mitre_technique_id
+mitre_technique_description
+severity
+likelihood
+programming_threat_vectors
+social_engineering_threat_vectors
+l4_control
+capec_id
+cwe_id
+threat_vector
+component_name
+component_type
+Domain
+
+
+
+
 template = """ <s>[INST] <<SYS>>
             As a cyber security expert, your task is to prepare a list of {number_of_threat} threats.It is very important that your responses are tailored to reflect the details you are given.
             <</SYS>>
