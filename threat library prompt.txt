@@ -1,6 +1,32 @@
 
 
 
+
+{ "Threat Name": "RabbitMQ Buffer Overflow",
+"Attack Domain": "Network",
+"Threat Description": "An attacker sends a crafted message to a RabbitMQ server with the intention of overflowing the buffer and executing malicious code. This can lead to unauthorized access, data tampering, or even complete system takeover.",
+"CAPEC Reference": "A02: Buffer Overflow",
+"Countermeasure": "Implement proper input validation and sanitization mechanisms to prevent malicious inputs from reaching the RabbitMQ server.",
+"MITRE Tactic ID": "T1059",
+"MITRE Tactic Description": "Buffer Overflow",
+"MITRE Technique ID": "T1059.003",
+"MITRE Technique Description": "Using a buffer overflow to execute malicious code.",
+"Severity": "High",
+"Likelihood": "Medium",
+"Programming Threat Vectors": "Input validation and sanitization bypass",
+"Social Engineering Threat Vectors": "Phishing or manipulation of system administrators to gain access to the RabbitMQ server.",
+"L4 Control": "Implementing firewalls or intrusion detection systems to detect and block malicious traffic targeting the RabbitMQ server.",
+"CAPEC ID": "A02",
+"CWE ID": "CWE-735",
+"Threat Vector": "Network",
+"Component Name": "RabbitMQ server",
+"Component Type": "Application" }
+
+
+
+
+
+
 input = """Act as a cyber security expert with the experience of threat library development for given <Component Name> components, your task is to prepare a list of 10 threats. It is very important that your responses are tailored to reflect the details you are given.
 Threat Name: A concise and descriptive name for the specific threat or attack scenario being analyzed.
 Attack Domain: The specific area or aspect of the system, application, or network targeted by the threat.
