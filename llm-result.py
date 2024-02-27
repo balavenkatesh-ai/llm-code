@@ -49,7 +49,8 @@ async def generate_threats(component: ComponentRequest):
     df.to_csv(csv_file_path, index=False)
 
     df['is_generated_by_llm'] = 'yes'
-    df['Threat ID'] = component_name + '_LLM_001'
+    df['Threat ID'] = df.apply(lambda row: f"{component_name}_LLM_{row.name + 1:03}", axis=1)
+    #df['Threat ID'] = component_name + '_LLM_001'
 
     json_response = df.to_json(orient="records")
     return json_response
