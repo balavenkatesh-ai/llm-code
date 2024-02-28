@@ -5,6 +5,15 @@ import json
 import pandas as pd
 from datetime import datetime
 
+
+ # Add component name to llm_threat_library.csv
+    if os.path.exists(llm_csv_file_path):
+        existing_df = pd.read_csv(llm_csv_file_path)
+        df_component = pd.DataFrame({'Component Name': [component_name]})
+        existing_df = existing_df.append(df_component, ignore_index=True)
+        existing_df.to_csv(llm_csv_file_path, index=False)
+
+
 app = FastAPI()
 
 class ComponentRequest(BaseModel):
