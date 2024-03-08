@@ -77,3 +77,17 @@ Java will be used as backend technology, and React will be used as Front end tec
 This application will be used as internal application and it will not be exposed to internet.
 All of the inbound traffic will be exposed as https endpoints.
 Few outbound requests uses wss (webs sockets), jms and https to fetch information other systems.
+
+0. How Threat ID generated manually. What is the format of id generation for new component?
+1. Where we will get threat name and description for given component name with version? Which website should i refer to get this data?
+2. Where can i get attack domain details?
+3. Where and how can i refer conuntermeasure?
+4. How severity measured and mapped based on threat details?
+5. How likelihood measured and how to get this data?
+6. Where to get programming_threat_vectors and social_engineering_threat_vectors data?
+7. How to map L2 and L4 control?
+8. How to map threat vector?
+9. How to map component type based on given component name?
+10. How to map Domain details as per threat?
+11. Which file should i refer for CWE ID and SCB_ICS_DOMAIN?
+12. How to map industry standard reference(OWSAP,MITRE,CAPAC,etc..) with particular threat(Which column data is useful to get reference data)
