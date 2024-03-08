@@ -78,16 +78,32 @@ This application will be used as internal application and it will not be exposed
 All of the inbound traffic will be exposed as https endpoints.
 Few outbound requests uses wss (webs sockets), jms and https to fetch information other systems.
 
-0. How Threat ID generated manually. What is the format of id generation for new component?
-1. Where we will get threat name and description for given component name with version? Which website should i refer to get this data?
-2. Where can i get attack domain details?
-3. Where and how can i refer conuntermeasure?
-4. How severity measured and mapped based on threat details?
-5. How likelihood measured and how to get this data?
-6. Where to get programming_threat_vectors and social_engineering_threat_vectors data?
-7. How to map L2 and L4 control?
-8. How to map threat vector?
-9. How to map component type based on given component name?
-10. How to map Domain details as per threat?
-11. Which file should i refer for CWE ID and SCB_ICS_DOMAIN?
-12. How to map industry standard reference(OWSAP,MITRE,CAPAC,etc..) with particular threat(Which column data is useful to get reference data)
+As we proceed with the development of a threat library for a new component using the LLM model, I have initiated an analysis to enhance LLM's performance in this scenario. As part of this process, I am currently preparing the dataset and would greatly benefit from assistance focusing on security considerations.
+
+Threat ID Generation: Could you provide guidance on how Threat IDs are manually generated? What specific format should we adhere to when generating IDs for new components?
+
+Threat Name and Description: Where can we locate the threat name and description for a given component name, along with its version? Which online resource is recommended for obtaining this initial set of information?
+
+Attack Domain Details: Where can we find comprehensive details about the attack domain?
+
+Countermeasures Information: How and where can we access information regarding countermeasures for a given threat description?
+
+Severity Measurement: Could you clarify how severity is measured and correlated with threat details?
+
+Likelihood Assessment: How is the likelihood of a threat being realized measured, and where can we find this data?
+
+Programming Threat Vectors and Social Engineering Threat Vectors: Where can we obtain data on programming threat vectors and social engineering threat vectors?
+
+Layer 2 (L2) and Layer 4 (L4) Control Measures Mapping: How are Layer 2 and Layer 4 control measures mapped? Which online resource should we refer to for this data?
+
+Threat Vector Mapping: How are threat vectors mapped?
+
+Component Type Mapping: How is the component type determined based on the given component name?
+
+Domain Details Mapping: How are domain details mapped in relation to threats?
+
+ICS ID and SCB_ICS_DOMAIN: Which file should we consult for obtaining ICS ID and SCB_ICS_DOMAIN?
+
+CWE_ID Mapping: Which document and resource should be consulted to map CWE_ID?
+
+Industry Standard References Mapping: How are industry standard references such as OWASP, MITRE, and CAPEC mapped to specific threats? Which column data is relevant for obtaining reference data?
