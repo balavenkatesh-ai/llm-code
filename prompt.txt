@@ -77,3 +77,13 @@ Java will be used as backend technology, and React will be used as Front end tec
 This application will be used as internal application and it will not be exposed to internet.
 All of the inbound traffic will be exposed as https endpoints.
 Few outbound requests uses wss (webs sockets), jms and https to fetch information other systems.
+
+Directly Addresses Chat-Based Needs: Meta offers two models: Instruct and Chat. Your use case specifically involves a chat interface, making the Chat LLM the optimal choice. Deep learning and traditional machine learning models are primarily focused on tasks like classification or prediction, and lack the ability to handle interactive, natural language conversations effectively.
+
+Superior Natural Language Processing (NLP): LLMs excel at understanding and responding to user queries phrased in natural language. This is crucial for your chatbot as it needs to grasp the user's intent when they provide the component name within a chat conversation.
+
+Information Retrieval with RAG: The RAG (Retrieval-Augmented Generation) method leverages the LLM's ability to search and retrieve relevant information from external sources. This aligns perfectly with your requirement of fetching threat details based on the component name entered by the user during the chat interaction.
+
+Structured Report Generation: LLMs can effectively summarize retrieved information and present it in a coherent report format. This is essential for your chatbot to deliver concise and informative threat reports directly within the chat interface.
+
+Continuous Learning and Adaptability: LLMs can be fine-tuned with additional threat data over time. This allows them to adapt to evolving threats and improve the accuracy of their reports, ensuring your system stays up-to-date.
