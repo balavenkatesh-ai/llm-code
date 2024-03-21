@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700'); 
+
+html, body, [class*="css"] {
+    font-family: 'Open Sans', sans-serif; 
+}
+
+hr {
+    margin: 0;
+}
+
+div[data-testid="stDecoration"] {
+    background-color: #38D200;
+    background-image: none !important;
+}
+
+.banner {
+    background: url('/app/static/banner.jpg');
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 20% 20%;
+}
+
+.welcome-message {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #A8A9AA
+}
+
+.banner h1 {
+    padding-bottom: 2px;
+    color: #A8A9AA
+}
+p,st-emotion-cache-vqd4fc {
+    font-size: 20px !important;
+}
+.stChatInput,textarea{
+    font-size: 20px;
+}
+.welcome{
+    margin-top: 20px;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.stHeadingContainer h1 {
+    padding-top: 14px
+}
+.stButton button, .stButton button:hover {
+    color: #FFFFFF !important;
+    border-radius: 30px;
+    padding: 0 20px;
+    border: none;
+}
+
+.stButton button:hover, .stButton button:active {
+    background: #0B56A8;    
+}
+
+.stButton button {
+    background-color: #0473EA;
+    border-color: #0473EA;
+    border-radius: 24px;
+}
+
+.stButton button p {
+    padding: 0px 50px  !important;
+}
+
+div[data-testid="stSidebarUserContent"] {
+    padding: 4rem 1.5rem
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #FFFFFF;
+    border-width: 1px 1px 0px 0px;
+    border-style: solid;
+    border-color:#E5E5E5;
+    box-shadow: #D4D4D4;
+    box-shadow: 0 0 5px #D4D4D4
+}
+
+div[data-testid="stBottom"] {
+    border-top: 1px solid #E5E5E5;
+}
+
+textarea:hover {
+    border: none !important;
+}
+.sidebar-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 300px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav ul a {
+    font-style: normal;
+    color: #262730;
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+.sidebar-nav ul li {
+    margin: 10px;
+}
+
+.sidebar-nav ul li path {
+    fill: #262730
+}
+
+div[data-testid="stAppViewBlockContainer"] {
+    padding-top: 0;
+}
+
+div[data-testid="chatAvatarIcon-assistant"] {
+    background-color: rgba(4, 115, 235, 0.9);
+    /*background-image: url('/images/assistant-bot.png')*/
+}
+
+div[data-testid="chatAvatarIcon-user"] {
+    background-color: green;
+}
+
+.chat-history {
+    margin-top: 3rem;
+}
+
+.container-wrapper {
+    text-align: center;
+}
+.container {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.column {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #D4D4D4;
+    background: #F6F6F6;
+    border-radius: 12px;
+    text-align: left;
+}
+.column:first-child {
+    margin-right: 20px
+}
+
+.sample-prompts {
+    margin-top: 100px;
+}
+
+.sample-prompts h3 {
+    color: #0473EA
+}
+
+.sample-prompts h4 {
+    font-size: 20px;
+    line-height: 27px;
+}
+
+div[data-testid="stBottomBlockContainer"] {
+    max-width: 95%;
+    padding: 25px 0;
+}
+
+.stChatInput textarea[data-testid="stChatInputTextArea"], 
+.stChatInput textarea[data-testid="stChatInputTextArea"]:focus,
+.stTextInput input, 
+.stTextInput input:focus {
+    border: none !important;
+    outline: none;
+    background: #E7F1FD;
+    padding: 15px;
+}
+
+div[data-baseweb="input"]:left,
+div[data-baseweb="input"]:focus ,
+div[data-baseweb="input"]:hover {
+    border: none !important;
+}
+
+button[data-testid="stChatInputSubmitButton"] {
+    padding: 15px 10px;
+}
+
+div[data-testid="textInputRootElement"]:focus {
+    border: none !important;
+    outline: none;
+}
+
+button[data-testid="baseButton-header"] {
+    display: none;
+}
+button[data-testid="baseButton-headerNoPadding"] {
+    display: none;
+}
+
+.stChat .stChatMessage .stChat_message .stChatUserAvatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.st-emotion-cache-p4micv {
+    width: 5rem;
+    height: 5rem;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    display: flex;
+}
+
+.block-container{
+    max-width: 100% !important;
+}
+
+button[data-testid='baseButton-secondary'], button[data-testid='baseButton-secondaryFormSubmit'] {
+    border: none !important;
+    outline: none;
+    background: #0473EA !important;
+    padding: 8px!important;
+    min-width: 100px !important;
+}
+
+.st-emotion-cache-ixecyn{
+    border:1px solid !important;
+    margin-top: 10px;
+    max-width: 70%;
+}
+section[data-testid="stSidebar"]{
+    min-width: 200px !important;
+}
+.radiant-text {
+  background: linear-gradient(45deg, #0473EA, #38d200);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.st-emotion-cache-1j3jaaw .ef3psqc12{
+    position: absolute;
+    top:0;
+    right: 0;
+    z-index: 999;
+}
+header[data-testid="stHeader"]{
+    display: none !important;
+}
+section[data-testid='stSidebar'] .st-emotion-cache-18ii5f0{
+align-items: center;
+    margin-left: 15px;
+}
