@@ -69,21 +69,17 @@ Stride GPT example
 A web application that allows users to create, store, and share personal notes. 
 The application is built using the React frontend framework and a Node.js backend with a MongoDB database. Users can sign up for an account and log in using OAuth2 with Google or Facebook. The notes are encrypted at rest and are only accessible by the user who created them. The application also supports real-time collaboration on notes with other users.
 
-Application Name is Credit Information Management Solutions.
-Application will be hosted on Red Hat Enterprise Linux RHEL 8x server.
-Frontend will be deployed on Apache httpd Web Server and backend will deployed on Red Hat JBoss Web Server TOMCAT 5x.
-Kong API gateway will be used as an API Gateway to expose the APIs to the UI. All the 
-Java will be used as backend technology, and React will be used as Front end technology.
-This application will be used as internal application and it will not be exposed to internet.
-All of the inbound traffic will be exposed as https endpoints.
-Few outbound requests uses wss (webs sockets), jms and https to fetch information other systems.
+These challenges are what I'm currently facing. If you have any insights or suggestions on how to address them, please feel free to share your thoughts.
 
-Directly Addresses Chat-Based Needs: Meta offers two models: Instruct and Chat. Your use case specifically involves a chat interface, making the Chat LLM the optimal choice. Deep learning and traditional machine learning models are primarily focused on tasks like classification or prediction, and lack the ability to handle interactive, natural language conversations effectively.
 
-Superior Natural Language Processing (NLP): LLMs excel at understanding and responding to user queries phrased in natural language. This is crucial for your chatbot as it needs to grasp the user's intent when they provide the component name within a chat conversation.
+Function Calling: Currently, we're facing a challenge with Llama 2 as it does not support dynamic function calling based on user input. Unlike Llama 2, OpenAI offers this functionality. For more information, you can refer to the following GitHub issue: [https://github.com/meta-llama/llama/issues/463]. In an effort to overcome this limitation, I'm exploring an alternative LLM model known as functionary-7b, which is tailored specifically for function calling scenarios. Unfortunately, I encountered an obstacle yesterday when attempting to install it; due to space constraints, I was unable to download the model.
 
-Information Retrieval with RAG: The RAG (Retrieval-Augmented Generation) method leverages the LLM's ability to search and retrieve relevant information from external sources. This aligns perfectly with your requirement of fetching threat details based on the component name entered by the user during the chat interaction.
+Function Parameter Extraction: Prior to invoking a function, it's essential to extract the necessary parameters from user input. For instance, when generating an MSBR report for the scpay app, we must extract the application name from the prompt. While this capability is supported by the OpenAI Model, I encountered an issue with Llama 2, where it automatically fills in missing information, which is not desired behavior for our use case.
 
-Structured Report Generation: LLMs can effectively summarize retrieved information and present it in a coherent report format. This is essential for your chatbot to deliver concise and informative threat reports directly within the chat interface.
+Combining RAG with Function Calling: We aim to integrate the Langchain RAG method with function calling options. This involves dynamically calling functions or retrieving information from the knowledge base.
 
-Continuous Learning and Adaptability: LLMs can be fine-tuned with additional threat data over time. This allows them to adapt to evolving threats and improve the accuracy of their reports, ensuring your system stays up-to-date.
+Follow-up Questions from Bot (YES/NO): We are considering implementing a feature that prompts the user for confirmation before generating an MSBR report. Currently, we are providing answers solely based on user questions.
+
+Parallel LLM Calls: Although we have set up Databricks to make parallel calls, we are facing challenges integrating it with the Langchain framework.
+
+RBAC (Role-Based Access Control): Users should be able to generate MSBR reports for any application and access information about other apps by asking questions.
