@@ -2,39 +2,49 @@ import re
 import json
 import csv
 import io
+import html2xlsx
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
 
-import subprocess
+def embed_html_into_excel(html_file_path, excel_file_path):
+    # Load HTML content from file
+    with open(html_file_path, 'r', encoding='utf-8') as html_file:
+        html_content = html_file.read()
 
-def convert_html_to_png_with_phantomjs(html_path, output_path="output.png"):
-    """Converts an HTML file to a PNG image using PhantomJS.
+    # Create a new workbook
+    wb = Workbook()
+    ws = wb.active
 
-    Args:
-        html_path (str): The path to the HTML file.
-        output_path (str, optional): The path to save the output PNG image.
-            Defaults to "output.png".
-    """
+    # Embed HTML content into the worksheet
+    ws.webSettings.url = 'data:text/html;base64,' + html2xlsx.html_to_base64(html_content)
 
-    try:
-        # Ensure PhantomJS is installed and accessible
-        subprocess.run(["phantomjs", "--version"], check=True)
+    # Set the column width to fit the content
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        ws.column_dimensions[column].width = adjusted_width
 
-        js_code = """
-        var page = require('webpage').create();
+    # Save the workbook
+    wb.save(excel_file_path)
+    print("HTML content embedded into Excel file successfully.")
 
-        page.open('{html_path}', function(status) {
-            if (status === 'success') {
-                page.render('{output_path}');
-                phantom.exit();
-            } else {
-                console.error('Unable to load the HTML file:', status);
-                phantom.exit(1);
-            }
-        });
-        """.format(html_path=html_path, output_path=output_path)
+if __name__ == "__main__":
+    html_file_path = input("Enter the path to the HTML file: ")
+    excel_file_path = input("Enter the output path for the Excel file: ")
+    embed_html_into_excel(html_file_path, excel_file_path)
 
-        subprocess.run(["phantomjs", "-e", js_code])  # Execute PhantomJS with JS code
-    except subprocess.CalledProcessError as err:
-        print("PhantomJS conversion failed:", err)
+
+
+
+
+
 
 if __name__ == "__main__":
     html_path = "path/to/your/html/file.html"  # Replace with your HTML file path
