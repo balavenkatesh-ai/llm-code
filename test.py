@@ -35,3 +35,41 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+import pandas as pd
+
+def create_csv_with_title(filename, title):
+    # Create a DataFrame for the first table
+    data1 = {
+        'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35],
+        'City': ['New York', 'Los Angeles', 'Chicago']
+    }
+    df1 = pd.DataFrame(data1)
+
+    # Create a DataFrame for the second table
+    data2 = {
+        'Country': ['USA', 'Canada', 'UK'],
+        'Language': ['English', 'French', 'English'],
+        'Population': [328, 37, 66]
+    }
+    df2 = pd.DataFrame(data2)
+
+    # Write the title and DataFrames to a CSV file
+    with open(filename, 'w') as f:
+        f.write(title + '\n\n')  # Write the title and leave one empty row
+        df1.to_csv(f, index=False)
+        # Add extra row between tables
+        f.write('\n')
+        df2.to_csv(f, index=False)
+
+def main():
+    filename = 'example.csv'
+    title = 'Table Title'
+
+    # Create the CSV file with title and tables
+    create_csv_with_title(filename, title)
+
+if __name__ == "__main__":
+    main()
