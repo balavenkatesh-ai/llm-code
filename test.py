@@ -1,45 +1,37 @@
-const puppeteer = require('puppeteer');
+from bs4 import BeautifulSoup
+import pandas as pd
+from weasyprint import HTML
+from openpyxl import load_workbook
+from openpyxl.drawing.image import Image
+import os
 
-(async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+def convert_html_to_pdf(html_path, pdf_path):
+    with open(html_path, "r") as html_file:
+        html_content = html_file.read()
+        HTML(string=html_content).write_pdf(pdf_path)
 
-  // Set viewport size
-  await page.setViewport({ width: 800, height: 600 });
+def attach_pdf_to_excel(pdf_path, excel_path):
+    wb = load_workbook(filename=excel_path)
+    ws = wb.active
+    
+    # Add the PDF as an image to the Excel sheet
+    img = Image(pdf_path)
+    ws.add_image(img, 'A1')
 
-  // Navigate to the HTML file passed as an argument
-  const htmlFilePath = process.argv[2];
-  await page.goto(`file://${htmlFilePath}`, { waitUntil: 'networkidle0' });
+    # Save the Excel file
+    wb.save(excel_path)
 
-  // Get the dimensions of the HTML content
-  const dimensions = await page.evaluate(() => {
-    const body = document.querySelector('body');
-    return {
-      width: body.scrollWidth,
-      height: body.scrollHeight,
-      deviceScaleFactor: window.devicePixelRatio,
-    };
-  });
+def main():
+    # Provide the paths to your HTML, PDF, and Excel files
+    html_path = "path/to/your/html/file.html"
+    pdf_path = "output.pdf"
+    excel_path = "path/to/your/excel/file.xlsx"
 
-  // Set the viewport to match the HTML content size
-  await page.setViewport({ width: dimensions.width, height: dimensions.height, deviceScaleFactor: dimensions.deviceScaleFactor });
+    # Convert HTML to PDF
+    convert_html_to_pdf(html_path, pdf_path)
 
-  // Take a screenshot of the HTML content
-  await page.screenshot({ path: 'output.png', fullPage: true });
-
-  await browser.close();
-})();
-
-
-import subprocess
-
-def convert_html_to_image(html_file_path):
-    try:
-        subprocess.run(["node", "htmlToImage.js", html_file_path], check=True)
-        print("HTML file converted to image successfully.")
-    except subprocess.CalledProcessError as e:
-        print("Error occurred while converting HTML to image:", e)
+    # Attach PDF to Excel
+    attach_pdf_to_excel(pdf_path, excel_path)
 
 if __name__ == "__main__":
-    html_path = input("Enter the path to the HTML file: ")
-    convert_html_to_image(html_path)
+    main()
