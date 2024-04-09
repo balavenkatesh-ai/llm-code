@@ -41,3 +41,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+# Write the first table
+        for index, row in df1.iterrows():
+            f.write(','.join('"{0}"'.format(val) for val in row) + '\n')
+        
+        # Add an extra empty row between tables
+        f.write('\n')
+        
+        # Write the second table
+        for index, row in df2.iterrows():
+            f.write(','.join('"{0}"'.format(val) for val in row) + '\n')
