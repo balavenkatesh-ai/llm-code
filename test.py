@@ -3,6 +3,43 @@ import json
 import csv
 import io
 
+import subprocess
+
+def convert_html_to_png_with_phantomjs(html_path, output_path="output.png"):
+    """Converts an HTML file to a PNG image using PhantomJS.
+
+    Args:
+        html_path (str): The path to the HTML file.
+        output_path (str, optional): The path to save the output PNG image.
+            Defaults to "output.png".
+    """
+
+    try:
+        # Ensure PhantomJS is installed and accessible
+        subprocess.run(["phantomjs", "--version"], check=True)
+
+        js_code = """
+        var page = require('webpage').create();
+
+        page.open('{html_path}', function(status) {
+            if (status === 'success') {
+                page.render('{output_path}');
+                phantom.exit();
+            } else {
+                console.error('Unable to load the HTML file:', status);
+                phantom.exit(1);
+            }
+        });
+        """.format(html_path=html_path, output_path=output_path)
+
+        subprocess.run(["phantomjs", "-e", js_code])  # Execute PhantomJS with JS code
+    except subprocess.CalledProcessError as err:
+        print("PhantomJS conversion failed:", err)
+
+if __name__ == "__main__":
+    html_path = "path/to/your/html/file.html"  # Replace with your HTML file path
+    convert_html_to_png_with_phantomjs(html_path)
+
 
 # def json_to_csv(response):
 #     """Extracts JSON data from the response and returns a CSV string in memory."""
