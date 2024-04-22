@@ -1,70 +1,16 @@
-import pandas as pd
+Task Updates:
 
-def create_csv_with_title(filename, title):
-    # Create a DataFrame for the first table
-    data1 = {
-        'Name': ['Alice', 'Bob', 'Charlie'],
-        'Age': [25, 30, 35],
-        'City': ['New York', 'Los Angeles', 'Chicago']
-    }
-    df1 = pd.DataFrame(data1)
+We've processed 4 manifest files, converted them to CSV format, and pushed them to the Faiss vector database.
+A conversation chain has been created to retrieve data based on prompts.
+To address function calling, we initially used the Phidata library. However, it's not compatible with the Llama 2 model.
+The Llama model has been hosted on Databricks and integrated with LangChain. However, the associated costs are proving to be too high.
+We've utilized the Instruct library for function calls.
+A custom chain has been developed to retrieve item IDs and component details in JSON format.
+Challenges:
 
-    # Create a DataFrame for the second table
-    data2 = {
-        'Country': ['USA', 'Canada', 'UK'],
-        'Language': ['English', 'French', 'English'],
-        'Population': [328, 37, 66]
-    }
-    df2 = pd.DataFrame(data2)
+When users prompt for generating an MSBR report, we need the system to call the "generate MABR" function. Essentially, we need to route user prompts to the appropriate function based on their input.
+Handling parallel calls to the LLM model poses a challenge. If 20 users hit the system simultaneously, the processing currently occurs sequentially.
+RAG Retrieval Technique:
 
-    # Write the title and DataFrames to a CSV file
-    with open(filename, 'w') as f:
-        f.write(title + '\n\n')  # Write the title and leave one empty row
-        
-        # Write the first table
-        for index, row in df1.iterrows():
-            f.write(','.join(map(str, row.values)) + '\n')
-        
-        # Add an extra empty row between tables
-        f.write('\n')
-        
-        # Write the second table
-        for index, row in df2.iterrows():
-            f.write(','.join(map(str, row.values)) + '\n')
-
-def main():
-    filename = 'example.csv'
-    title = 'Table Title'
-
-    # Create the CSV file with title and tables
-    create_csv_with_title(filename, title)
-
-if __name__ == "__main__":
-    main()
-
-
-
-
-# Determine the maximum number of columns
-    max_columns = max(len(df1.columns), len(df2.columns))
-
-    # Write the title and DataFrames to a CSV file
-    with open(filename, 'w') as f:
-        f.write(title + '\n\n')  # Write the title and leave one empty row
-        
-        # Write the first table
-        for index, row in df1.iterrows():
-            row_values = list(row.values) + [''] * (max_columns - len(df1.columns))
-            f.write(','.join('"{0}"'.format(val) for val in row_values) + '\n')
-        
-        # Add an extra empty row between tables
-        f.write('\n')
-        
-        # Write the second table
-        for index, row in df2.iterrows():
-            row_values = list(row.values) + [''] * (max_columns - len(df2.columns))
-            f.write(','.join('"{0}"'.format(val) for val in row_values) + '\n')
-
-    # Read the created CSV file back into a DataFrame
-    df = pd.read_csv(filename, skiprows=2)  # Skip the title and empty row
-    return df
+Backend retrieval is done through the Vector Store backend retriever.
+We've implemented contextual compression and filtering techniques for efficient retrieval.
