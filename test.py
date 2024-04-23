@@ -36,3 +36,17 @@ root_folder = "path/to/root/folder"
 
 # Call the function to read manifest folders and perform the tasks
 read_manifest_folders(root_folder)
+
+
+
+ # Write YAML data to CSV file
+    csv_file_path = "yaml_data.csv"
+    if yaml_data_list:
+        fieldnames = set()
+        for yaml_data in yaml_data_list:
+            fieldnames.update(yaml_data.keys())
+        with open(csv_file_path, 'w', newline='') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=sorted(fieldnames))
+            writer.writeheader()
+            for yaml_data in yaml_data_list:
+                writer.writerow(yaml_data)
