@@ -1,16 +1,38 @@
-Task Updates:
+import os
+import yaml
+import json
+from shutil import copyfile
 
-We've processed 4 manifest files, converted them to CSV format, and pushed them to the Faiss vector database.
-A conversation chain has been created to retrieve data based on prompts.
-To address function calling, we initially used the Phidata library. However, it's not compatible with the Llama 2 model.
-The Llama model has been hosted on Databricks and integrated with LangChain. However, the associated costs are proving to be too high.
-We've utilized the Instruct library for function calls.
-A custom chain has been developed to retrieve item IDs and component details in JSON format.
-Challenges:
+def read_manifest_folders(root_folder):
+    # Create folders for storing YAML and JSON files
+    if not os.path.exists("manifest_yaml"):
+        os.makedirs("manifest_yaml")
+    if not os.path.exists("manifest_json"):
+        os.makedirs("manifest_json")
+    
+    # Iterate through each folder in the root directory
+    for folder_name in os.listdir(root_folder):
+        folder_path = os.path.join(root_folder, folder_name)
+        if os.path.isdir(folder_path):
+            # Open template folder in each folder
+            template_folder = os.path.join(folder_path, "template")
+            if os.path.exists(template_folder):
+                # Copy app_definition_mf.yml file to manifest_yaml folder with foldername_filename.yaml
+                source_file = os.path.join(template_folder, "app_definition_mf.yml")
+                dest_file = os.path.join("manifest_yaml", f"{folder_name}_app_definition_mf.yaml")
+                copyfile(source_file, dest_file)
+                
+                # Convert YAML to JSON and save in manifest_json folder
+                with open(source_file, 'r') as yaml_file:
+                    yaml_data = yaml.safe_load(yaml_file)
+                    json_data = json.dumps(yaml_data, indent=4)
+                    json_filename = f"{folder_name}_app_definition_mf.json"
+                    json_filepath = os.path.join("manifest_json", json_filename)
+                    with open(json_filepath, 'w') as json_file:
+                        json_file.write(json_data)
 
-When users prompt for generating an MSBR report, we need the system to call the "generate MABR" function. Essentially, we need to route user prompts to the appropriate function based on their input.
-Handling parallel calls to the LLM model poses a challenge. If 20 users hit the system simultaneously, the processing currently occurs sequentially.
-RAG Retrieval Technique:
+# Specify the root folder containing manifest folders
+root_folder = "path/to/root/folder"
 
-Backend retrieval is done through the Vector Store backend retriever.
-We've implemented contextual compression and filtering techniques for efficient retrieval.
+# Call the function to read manifest folders and perform the tasks
+read_manifest_folders(root_folder)
