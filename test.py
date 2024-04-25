@@ -37,12 +37,3 @@ df.to_csv("manifest_data.csv", index=False)
 print("YAML files successfully converted to CSV!")
 
 
-Subject: Request for Approval: Transfer of Manifest Files and Master Control File to DevFactory
-
-Dear [Recipient's Name],
-
-I hope this email finds you well.
-
-I am writing to seek your approval for a critical task related to our project. We need to transfer all 240 manifest files along with the master control file to DevFactory. This transfer is essential for storing these files in the vector database and subsequently performing the RAG technique with the Language Model (LLM).
-
-To ensure a smooth transition, I kindly request your guidance on the steps to transfer these files to DevFactory. 
