@@ -37,3 +37,8 @@ df.to_csv("manifest_data.csv", index=False)
 print("YAML files successfully converted to CSV!")
 
 
+I've conducted two experiments with different formats of manifest files: JSON and CSV. I created two collections in the vector database and tested both experiments with the same questions.
+
+In the experiment using JSON format, the Language Model (LLM) couldn't extract the correct item ID from the JSON. However, when I used CSV format, the LLM successfully extracted the correct item ID from the context.
+
+To troubleshoot this experiment, I utilized LangSmith. I've attached the results of both experiments below for your review.
