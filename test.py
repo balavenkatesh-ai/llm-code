@@ -18,7 +18,10 @@ Actions to Overcome:
 4. Changed the LLM model and tested for improved accuracy.
 5. Crafted prompts to reference the correct keys for retrieving values.
 7. Implemented the MapReduceDocumentsChain technique to retrieve each document and filter the contents using the LLM model for improved accuracy. However, it continues to reference app-ID instead of item ID details.
+Root Cause of Issues:
+The vector database successfully retrieves the correct manifest document. However, the LLM model struggles to extract accurate values from JSON data, as it refers to app-ID instead of item-ID.
 
+#RootCause #VectorDatabase #LLMModel #JSONData #AccuracyIssues
 #MapReduceDocumentsChain #LLMModel #DataFiltering #AccuracyIssues
 #RAG #JSON #LLM #DataExtraction #AccuracyChallenges
 
