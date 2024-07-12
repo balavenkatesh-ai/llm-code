@@ -48,4 +48,13 @@ def process_tip_files(tip_folder: str, aws_path: str, master_path: str, output_f
             print(f"Error processing {tip_file}: {e}")
 
 if __name__ == "__main__":
-    tip_folder
+    tip_folder = 'data/tip'
+    aws_path = 'data/aws.xlsx'
+    master_path = 'data/master.xlsx'
+    output_folder = 'output/tip'
+
+    # Setup the database
+    setup_database()
+
+    # Process the TIP files
+    process_tip_files(tip_folder, aws_path, master_path, output_folder)
