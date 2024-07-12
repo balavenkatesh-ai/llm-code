@@ -1,95 +1,78 @@
-import re
-import json
-import csv
-import io
+import pandas as pd
+import os
+from typing import Optional, Tuple
 
-# def convert_to_csv(response,csv_filename):
+class AWSICSControlMapper:
+    def __init__(self, aws_path: str, master_path: str):
+        """
+        Initializes the AWSICSControlMapper with AWS and master file paths.
 
-#     # Extract all JSON data blocks using regular expressions
-#     json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
+        :param aws_path: The path to the AWS Excel file.
+        :param master_path: The path to the master Excel file.
+        """
+        self.aws_df = self.read_excel_file(aws_path)
+        self.master_df = self.read_excel_file(master_path)
 
-#     if json_data_blocks:
-#         with open(csv_filename, "w", newline="") as csvfile:
-#             writer = csv.DictWriter(csvfile, fieldnames=None)  # Initialize without headers
+    def read_excel_file(self, file_path: str) -> Optional[pd.DataFrame]:
+        """
+        Reads an Excel file and returns a pandas DataFrame.
 
-#             for json_data_str in json_data_blocks:
-#                 try:
-#                     json_data = json.loads(json_data_str)
-
-#                     # Write headers only if not already written
-#                     if not writer.fieldnames:
-#                         writer.fieldnames = list(json_data.keys())
-#                         writer.writeheader()
-
-#                     writer.writerow(json_data)
-
-#                 except json.JSONDecodeError:
-#                     print(f"Error: Invalid JSON data format in block: {json_data_str}")
-
-#         print("CSV file created successfully!")
-#     else:
-#         print("Error: No JSON data found in the response.")
-
-
-def json_to_csv(response):
-    """Extracts JSON data from the response and returns a CSV string in memory."""
-
-    csv_data = io.StringIO()
-    writer = csv.DictWriter(csv_data, fieldnames=None)
-
-    # Extract JSON blocks, ensuring double quotes around property names (just in case)
-    json_blocks = re.findall(r"```json\n(.*?)\n```", response, re.DOTALL)
-
-    for json_data_str in json_blocks:
-        # Add commas between JSON objects
-        json_data_str = "[" + re.sub(r'}\s*{', '},{', json_data_str) + "]"
-
+        :param file_path: The path to the Excel file.
+        :return: A pandas DataFrame containing the data from the Excel file, or None if an error occurs.
+        """
         try:
-            # Load JSON data
-            json_data_blocks = json.loads(json_data_str)
-        except json.decoder.JSONDecodeError as e:
-            raise ValueError(f"Error decoding JSON: {e}")
-
-        for json_data in json_data_blocks:
-            if not writer.fieldnames:
-                writer.fieldnames = list(json_data.keys())
-                writer.writeheader()
-            writer.writerow(json_data)
-
-    csv_data.seek(0)
-    return csv_data.read()
-        
-
-def convert_to_csv(response, csv_filename):
-    """Extracts JSON data from the response, writes it to a file, and returns a CSV string."""
-
-    with open(csv_filename, "w", newline="") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=None)
-
-        # Extract and write JSON blocks to both file and in-memory buffer
-        csv_data = io.StringIO()  # Create in-memory buffer
-        in_memory_writer = csv.DictWriter(csv_data, fieldnames=None)
-
-        json_data_blocks = re.findall(r'`json(.*?)`', response, flags=re.DOTALL)
-        if json_data_blocks:
-            for json_data_str in json_data_blocks:
-                try:
-                    json_data = json.loads(json_data_str)
-
-                    if not writer.fieldnames:
-                        writer.fieldnames = list(json_data.keys())
-                        in_memory_writer.fieldnames = writer.fieldnames  # Copy headers
-                        writer.writeheader()
-                        in_memory_writer.writeheader()
-
-                    writer.writerow(json_data)
-                    in_memory_writer.writerow(json_data)
-
-                except json.JSONDecodeError:
-                    print(f"Error: Invalid JSON data format in block: {json_data_str}")
-
-            csv_data.seek(0)  # Rewind in-memory buffer
-            return csv_data.read()  # Return CSV string
-        else:
-            print("Error: No JSON data found in the response.")
+            df = pd.read_excel(file_path)
+            return df
+        except Exception as e:
+            print(f"Error reading {file_path}: {e}")
             return None
+
+    def map_control_title_to_l2_id(self, control_title: str) -> Optional[str]:
+        """
+        Maps the control title to the L2 ID using the AWS DataFrame.
+
+        :param control_title: The control title to map.
+        :return: The L2 ID if found, otherwise None.
+        """
+        try:
+            l2_id = self.aws_df.loc[self.aws_df['L4 Control Name'] == control_title, 'L2 ID']
+            if not l2_id.empty:
+                return l2_id.iloc[0]
+            else:
+                print(f"L2 ID not found for Control Title: {control_title}")
+                return None
+        except Exception as e:
+            print(f"Error mapping control title to L2 ID: {e}")
+            return None
+
+    def map_l2_id_to_control_domain(self, l2_id: str) -> Optional[str]:
+        """
+        Maps the L2 ID to the control domain using the master DataFrame.
+
+        :param l2_id: The L2 ID to map.
+        :return: The control domain if found, otherwise None.
+        """
+        try:
+            control_domain = self.master_df.loc[self.master_df['Statement Index'] == l2_id, 'Control Domain']
+            if not control_domain.empty:
+                return control_domain.iloc[0]
+            else:
+                print(f"Control Domain not found for L2 ID: {l2_id}")
+                return None
+        except Exception as e:
+            print(f"Error mapping L2 ID to control domain: {e}")
+            return None
+
+    def get_l2_id_and_control_domain(self, control_title: str) -> Optional[Tuple[str, str]]:
+        """
+        Gets the L2 ID and control domain for a given control title.
+
+        :param control_title: The control title to map.
+        :return: A tuple of (L2 ID, Control Domain) if both are found, otherwise None.
+        """
+        l2_id = self.map_control_title_to_l2_id(control_title)
+        if l2_id is not None:
+            control_domain = self.map_l2_id_to_control_domain(l2_id)
+            if control_domain is not None:
+                return l2_id, control_domain
+        return None
