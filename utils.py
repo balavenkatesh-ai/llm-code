@@ -76,3 +76,51 @@ class AWSICSControlMapper:
             if control_domain is not None:
                 return l2_id, control_domain
         return None
+
+pip install pandas sqlalchemy python-dotenv psycopg2-binary
+
+
+from db.database import create_engine_instance
+from db.models import Base
+
+def setup_database() -> None:
+    """
+    Set up the database by creating tables if they don't exist.
+    """
+    engine = create_engine_instance()
+    Base.metadata.create_all(engine)
+
+
+
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from db.models import Base
+
+def get_db_url() -> str:
+    """
+    Get the database URL from the system environment variable.
+    
+    :return: Database URL string.
+    """
+    return os.getenv('DATABASE_URL')
+
+def create_engine_instance() -> create_engine:
+    """
+    Create and return a SQLAlchemy engine instance.
+    
+    :return: SQLAlchemy engine instance.
+    """
+    db_url = get_db_url()
+    if db_url is None:
+        raise ValueError("DATABASE_URL environment variable is not set.")
+    return create_engine(db_url)
+
+def create_session() -> sessionmaker:
+    """
+    Create and return a SQLAlchemy sessionmaker instance bound to the engine.
+    
+    :return: SQLAlchemy sessionmaker instance.
+    """
+    engine = create_engine_instance()
+    return sessionmaker(bind=engine)
