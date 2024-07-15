@@ -1,18 +1,15 @@
-def get_db_url() -> str:
+def setup_database():
     """
-    Get the database URL from the system environment variable.
-    
-    :return: Database URL string.
+    Setup the database connection using environment variables.
     """
-    db_url = os.getenv('TIP_ICS_POSTGRES_DB_URL')
-    if db_url is None:
-        raise ValueError("TIP_ICS_POSTGRES_DB_URL environment variable is not set.")
-    
-    # URL encode username and password
-    db_url_parts = db_url.split('@')
-    if len(db_url_parts) != 2:
-        raise ValueError("Invalid DATABASE_URL format.")
-    
-    user_info, rest = db_url_parts
-    user_info_encoded = quote(user_info, safe=':')
-    return f"{user_info_encoded}@{rest}"
+    db_user = os.getenv('DB_USER')
+    db_password = os.getenv('DB_PASSWORD')
+    db_host = os.getenv('DB_HOST')
+    db_port = os.getenv('DB_PORT')
+    db_name = os.getenv('DB_NAME')
+
+    if not all([db_user, db_password, db_host, db_port, db_name]):
+        raise ValueError("One or more database environment variables are not set.")
+
+    db_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+    return create_engine(db_url)
