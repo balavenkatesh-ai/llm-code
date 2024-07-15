@@ -27,3 +27,14 @@ def create_session(engine):
     """
     Session = sessionmaker(bind=engine)
     return Session
+
+
+from .setup import setup_database, Base
+from .models import AwsEc2TipControl
+
+def init_db():
+    """
+    Initialize the database by creating tables.
+    """
+    engine = setup_database()
+    Base.metadata.create_all(engine)
