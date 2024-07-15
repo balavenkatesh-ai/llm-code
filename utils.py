@@ -1,22 +1,129 @@
-def map_control_title(self, control_title: str) -> (str, str):
-        """
-        Maps the control title to the L2 ID and control domain using the AWS DataFrame.
+# Ignore data folder
+data/
 
-        :param control_title: The control title to map.
-        :return: A tuple containing the L2 ID and control domain if found, otherwise (None, None).
-        """
-        try:
-            row = self.aws_df[self.aws_df['L4 Control Name'] == control_title]
-            if row.empty:
-                raise ValueError(f"Control title '{control_title}' not found in AWS DataFrame.")
-            l2_id = row.iloc[0]['L2 ID']
-            control_domain = row.iloc[0]['L2 Name']
-            return l2_id, control_domain
-        except Exception as e:
-            print(f"Error mapping control title '{control_title}': {e}")
-            return None, None
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
+# C extensions
+*.so
 
-tip_df[['ICS ID', 'ICS Control Area']] = tip_df.apply(
-                lambda row: pd.Series(mapper.map_control_title(row['Control Title'])), axis=1
-            )
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# VS Code
+.vscode/
