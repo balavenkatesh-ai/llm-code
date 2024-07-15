@@ -1,3 +1,10 @@
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
 def setup_database():
     """
     Setup the database connection using environment variables.
@@ -13,3 +20,10 @@ def setup_database():
 
     db_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
     return create_engine(db_url)
+
+def create_session(engine):
+    """
+    Create a SQLAlchemy session.
+    """
+    Session = sessionmaker(bind=engine)
+    return Session
