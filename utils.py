@@ -1,30 +1,30 @@
+from sqlalchemy import Column, String, Integer, JSON, create_engine
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import uuid
 
-from enum import Enum
-from pydantic import BaseModel, Field
-from typing import List
+Base = declarative_base()
 
-class Action(str, Enum):
-    permit = "permit"
-    deny = "deny"
+class FirewallPolicyRequests(Base):
+    __tablename__ = 'firewall_policy_requests'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    request_id = Column(PG_UUID(as_uuid=True), default=uuid.uuid4, nullable=False)
+    request = Column(JSON, nullable=False)
+    status = Column(String, nullable=False)
+    response = Column(JSON, nullable=True)
+    response_status_code = Column(Integer, nullable=True)
+    business_application_details = Column(JSON, nullable=False)
+    policy_engine_response = Column(JSON, nullable=False)
+    policy_evaluation_status = Column(String, nullable=False)
+    policy_version = Column(String, nullable=False)
 
-class Rule(str, Enum):
-    add = "add"
-    remove = "remove"
+# Database setup (replace with your database URL)
+DATABASE_URL = "postgresql+psycopg2://user:password@localhost/dbname"
 
-class Pipeline(BaseModel):
-    repo_name: str
-    build_id: str
-    ado_env: str
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-class FirewallDetails(BaseModel):
-    src_address: str
-    dst_address: str
-    dst_port: int
-    action: Action
-    rule: Rule
-
-class FirewallRequest(BaseModel):
-    itam_id: str
-    dst_id: str
-    pipeline: Pipeline
-    firewall_details: List[FirewallDetails]
+# Create tables
+Base.metadata.create_all(bind=engine)
