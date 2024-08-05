@@ -1,38 +1,25 @@
-from pydantic import BaseModel, Field
-from typing import List
+from sqlalchemy import Column, Integer, String, DateTime, create_engine
+from sqlalchemy.ext.declarative import declarative_base, declared_attr
+from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 
-class NetworkRule(BaseModel):
-    flag: str
-    source_itam: int
-    destination_itam: int
-    sources: List[str]
-    destinations: List[str]
-    services: List[str]
+Base = declarative_base()
 
-class NetworkRules(BaseModel):
-    __root__: List[NetworkRule]
-    
-    
-    ```python
-from pydantic import BaseModel
-from typing import List, Union
+class TimestampMixin:
+    @declared_attr
+    def created_by(cls):
+        return Column(String, nullable=False)
 
-class TCPProtocol(BaseModel):
-    TCP: List[int]
+    @declared_attr
+    def modified_by(cls):
+        return Column(String, nullable=True)
 
-class UDPProtocol(BaseModel):
-    UDP: List[int]
+    @declared_attr
+    def created_at(cls):
+        return Column(DateTime, default=datetime.utcnow, nullable=False)
 
-class TCPStringProtocol(BaseModel):
-    TCP: List[str]
-
-class Provider(BaseModel):
-    flag: str
-    itam: int
-    service: str
-    protocol: List[Union[TCPProtocol, UDPProtocol, TCPStringProtocol, str]]
-
-class ProviderList(BaseModel):
-    providers: List[Provider]
+    @declared_attr
+    def modified_at(cls):
+        return Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
     
     
