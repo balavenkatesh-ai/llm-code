@@ -1,25 +1,41 @@
-from sqlalchemy import Column, Integer, String, DateTime, create_engine
-from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import FileResponse
+import subprocess
+import os
 
-Base = declarative_base()
+app = FastAPI()
 
-class TimestampMixin:
-    @declared_attr
-    def created_by(cls):
-        return Column(String, nullable=False)
-
-    @declared_attr
-    def modified_by(cls):
-        return Column(String, nullable=True)
-
-    @declared_attr
-    def created_at(cls):
-        return Column(DateTime, default=datetime.utcnow, nullable=False)
-
-    @declared_attr
-    def modified_at(cls):
-        return Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
+@app.post("/scan")
+async def scan_files(ini_file: UploadFile = File(...), mq_policy_file: UploadFile = File(...)):
+    # Save uploaded files to disk
+    ini_path = "/tmp/qm.ini"
+    mq_policy_path = "/tmp/mq_policy.yml"
     
+    with open(ini_path, "wb") as f:
+        f.write(await ini_file.read())
     
+    with open(mq_policy_path, "wb") as f:
+        f.write(await mq_policy_file.read())
+    
+    # Assuming intercept tool and other necessary files are already available in /tmp/
+    intercept_path = "/tmp/intercept"
+    intercept_config_path = "/tmp/intercept_config"
+    
+    # Make the intercept tool executable
+    os.chmod(intercept_path, 0o755)
+
+    # Run the intercept commands
+    subprocess.run([intercept_path, "config", "-r", f"config -a {mq_policy_path}"], shell=True)
+    subprocess.run([intercept_path, "assure", "-t", ini_path], shell=True)
+    subprocess.run(['jq', '-r', f'.runs[].results[].ruleId | capture("intercept.cc.assure.policy.({{ruleId}})")', 'intercept.assure.sarif.json', '>', 'failed_checks.txt'], shell=True)
+    
+    failed_checks_path = "/tmp/failed_checks.txt"
+    
+    if os.path.exists(failed_checks_path):
+        return FileResponse(failed_checks_path, media_type='text/plain', filename='failed_checks.txt')
+    else:
+        return {"message": "failed_checks.txt not found"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
