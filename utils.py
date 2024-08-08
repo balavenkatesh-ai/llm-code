@@ -2,64 +2,33 @@ import os
 import subprocess
 import tempfile
 import shutil
-import zipfile
+import json
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 
 app = FastAPI()
 
-def get_zip_path(zip_file_name: str) -> str:
-    """Get the path to the zip file in the application directory."""
-    app_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(app_dir, zip_file_name)
-
-def get_extract_path(extracted_dir: str) -> str:
-    """Get the path to the directory where the zip file contents are extracted."""
-    app_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(app_dir, extracted_dir)
-
-def download_zip(zip_url: str, download_path: str):
-    """Download the zip file using curl if it doesn't already exist."""
-    if not os.path.isfile(download_path):
-        try:
-            subprocess.run(["curl", "-L", "-o", download_path, zip_url], check=True)
-            if not os.path.isfile(download_path):
-                raise HTTPException(status_code=404, detail="Zip file download failed")
-        except subprocess.CalledProcessError as e:
-            raise HTTPException(status_code=500, detail=f"Error downloading zip file: {e.stderr.decode()}")
-
-def extract_zip(zip_path: str, extract_to: str):
-    """Extract the zip file to the specified directory."""
+def parse_sarif_file(sarif_path: str) -> str:
+    """Parse the SARIF JSON file and extract the ruleId values."""
     try:
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(extract_to)
-    except zipfile.BadZipFile:
-        raise HTTPException(status_code=500, detail="Error extracting zip file")
+        with open(sarif_path, 'r') as f:
+            sarif_data = json.load(f)
+        rule_ids = [result["ruleId"] for run in sarif_data["runs"] for result in run["results"]]
+        return "\n".join(rule_ids)
+    except (json.JSONDecodeError, KeyError) as e:
+        raise HTTPException(status_code=500, detail=f"Error parsing SARIF file: {str(e)}")
 
 @app.post("/scan")
 async def scan_files(mq_policy_file: UploadFile = File(...)):
-    zip_url = "https://example.com/path/to/intercept.zip"  # Replace with actual URL
-    zip_file_name = "intercept.zip"
-    extracted_dir = "intercept_dir"
-    intercept_binary_name = "intercept"  # Update with the actual binary name if different
+    intercept_binary_path = "scan_tools/intercept/intercept"
+    print(f"Looking for intercept binary at: {os.path.abspath(intercept_binary_path)}")
+    
+    if not os.path.isfile(intercept_binary_path):
+        raise HTTPException(status_code=404, detail="Intercept binary not found")
 
-    zip_path = get_zip_path(zip_file_name)
-    extract_path = get_extract_path(extracted_dir)
-    intercept_path = os.path.join(extract_path, intercept_binary_name)
-
-    # Create the extraction directory if it does not exist
-    if not os.path.isdir(extract_path):
-        os.makedirs(extract_path, exist_ok=True)
-        # Download and extract the zip file if not extracted
-        download_zip(zip_url, zip_path)
-        extract_zip(zip_path, extract_path)
-
-    if not os.path.isfile(intercept_path):
-        raise HTTPException(status_code=404, detail="Intercept binary not found in extracted directory")
-
-    # Define paths for temporary files
     with tempfile.TemporaryDirectory() as temp_dir:
         mq_policy_path = os.path.join(temp_dir, "mq_policy.yml")
+        intercept_path = os.path.join(temp_dir, "intercept")
         intercept_assure_path = os.path.join(temp_dir, "intercept.assure.sarif.json")
         failed_checks_path = os.path.join(temp_dir, "failed_checks.txt")
 
@@ -67,18 +36,25 @@ async def scan_files(mq_policy_file: UploadFile = File(...)):
         with open(mq_policy_path, "wb") as f:
             f.write(await mq_policy_file.read())
 
+        # Copy the intercept binary to the temp directory
+        shutil.copy(intercept_binary_path, intercept_path)
+        print(f"Intercept binary copied to: {intercept_path}")
+
         # Make the intercept tool executable
         os.chmod(intercept_path, 0o755)
 
         try:
+            # Debug statement to print the command
+            print(f"Running command: {[intercept_path, 'config', '-r', mq_policy_path]}")
+            
             # Run intercept commands
-            subprocess.run([intercept_path, "config", "-r", f"config -a {mq_policy_path}"], check=True, cwd=temp_dir, capture_output=True)
+            subprocess.run([intercept_path, "config", "-r", mq_policy_path], check=True, cwd=temp_dir, capture_output=True)
             subprocess.run([intercept_path, "assure", "-t", mq_policy_path], check=True, cwd=temp_dir, capture_output=True)
             
-            result = subprocess.run(['jq', '-r', '.runs[].results[].ruleId | capture("intercept.cc.assure.policy.({ruleId})")', intercept_assure_path], text=True, capture_output=True)
-
+            # Parse the SARIF file and extract ruleId values
+            rule_ids = parse_sarif_file(intercept_assure_path)
             with open(failed_checks_path, "w") as f:
-                f.write(result.stdout)
+                f.write(rule_ids)
             
             if os.path.exists(failed_checks_path):
                 return FileResponse(failed_checks_path, media_type='text/plain', filename='failed_checks.txt')
