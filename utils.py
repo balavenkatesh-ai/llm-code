@@ -13,6 +13,11 @@ def get_zip_path(zip_file_name: str) -> str:
     app_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(app_dir, zip_file_name)
 
+def get_extract_path(extracted_dir: str) -> str:
+    """Get the path to the directory where the zip file contents are extracted."""
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(app_dir, extracted_dir)
+
 def download_zip(zip_url: str, download_path: str):
     """Download the zip file using curl if it doesn't already exist."""
     if not os.path.isfile(download_path):
@@ -39,28 +44,28 @@ async def scan_files(mq_policy_file: UploadFile = File(...)):
     intercept_binary_name = "intercept"  # Update with the actual binary name if different
 
     zip_path = get_zip_path(zip_file_name)
+    extract_path = get_extract_path(extracted_dir)
+    intercept_path = os.path.join(extract_path, intercept_binary_name)
 
+    # Create the extraction directory if it does not exist
+    if not os.path.isdir(extract_path):
+        os.makedirs(extract_path, exist_ok=True)
+        # Download and extract the zip file if not extracted
+        download_zip(zip_url, zip_path)
+        extract_zip(zip_path, extract_path)
+
+    if not os.path.isfile(intercept_path):
+        raise HTTPException(status_code=404, detail="Intercept binary not found in extracted directory")
+
+    # Define paths for temporary files
     with tempfile.TemporaryDirectory() as temp_dir:
         mq_policy_path = os.path.join(temp_dir, "mq_policy.yml")
-        extract_path = os.path.join(temp_dir, extracted_dir)
-        intercept_path = os.path.join(extract_path, intercept_binary_name)
         intercept_assure_path = os.path.join(temp_dir, "intercept.assure.sarif.json")
         failed_checks_path = os.path.join(temp_dir, "failed_checks.txt")
 
         # Save uploaded mq_policy.yml file to the temp directory
         with open(mq_policy_path, "wb") as f:
             f.write(await mq_policy_file.read())
-
-        # Download the zip file if it does not already exist in the application directory
-        download_zip(zip_url, zip_path)
-        
-        # Create directory to extract the zip file
-        os.makedirs(extract_path, exist_ok=True)
-        # Extract the zip file
-        extract_zip(zip_path, extract_path)
-
-        if not os.path.isfile(intercept_path):
-            raise HTTPException(status_code=404, detail="Intercept binary not found in zip")
 
         # Make the intercept tool executable
         os.chmod(intercept_path, 0o755)
