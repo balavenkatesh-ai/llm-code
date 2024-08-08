@@ -4,7 +4,7 @@ import subprocess
 import os
 import tempfile
 import shutil
-
+print(f"Looking for intercept binary at: {os.path.abspath(intercept_binary_path)}")
 app = FastAPI()
 
 @app.post("/scan")
