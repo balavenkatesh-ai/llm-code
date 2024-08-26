@@ -1,28 +1,13 @@
-from fastapi.testclient import TestClient
-from app import app  # Replace this with your actual app import
+Subject: Request for Authorization Token to Access Testbox On Demand API for TIP 2.0 Project
 
-client = TestClient(app)
+Dear [Recipient's Name],
 
-# Test for GET `/tip/control_remediation/{gts_id}`
-def test_get_tip_controls_by_gts_id():
-    gts_id = "test_id"  # Replace with a valid ID
-    response = client.get(f"/tip/control_remediation/{gts_id}")
-    assert response.status_code == 200
-    assert response.json()["status"] == "success"  # Adjust this based on your actual response
+I hope this email finds you well.
 
-# Test for GET `/tip/control_remediation/`
-def test_get_all_tip_controls():
-    response = client.get("/tip/control_remediation/")
-    assert response.status_code == 200
-    assert isinstance(response.json(), list)  # Assuming it returns a list of controls
+We are working on the TIP 2.0 project and would like to use the Testbox On Demand API. In order to access this API, we require an authorization token, which we understand is generated via the Leap API.
 
-# Test for POST `/tip/inventory`
-def test_save_tip_inventory():
-    inventory_data = {
-        "field1": "value1",  # Replace with actual fields
-        "field2": "value2",
-        # Add more fields as required by your model
-    }
-    response = client.post("/tip/inventory", json=inventory_data)
-    assert response.status_code == 200
-    assert response.json()["message"] == "TIP Inventory Successfully Created in the Database"
+We have thoroughly reviewed the API documentation and the relevant Confluence pages. It seems that once you provide the necessary grant_type details, we should be able to obtain the required auth token to access all On Demand APIs.
+
+Could you kindly share the appropriate grant_type values that would grant access to the vmaas scopes? This will help us proceed with our integration smoothly.
+
+Thank you for your assistance, and we look forward to your prompt response.
