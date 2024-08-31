@@ -1,13 +1,32 @@
-Subject: Request for Authorization Token to Access Testbox On Demand API for TIP 2.0 Project
+from sqlmodel import SQLModel, create_engine, Session, select
 
-Dear [Recipient's Name],
+class TipControlRemediation(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    tip_gts_id: str
+    tip_remediation_data: str
+    tip_version: str
+    active: bool
 
-I hope this email finds you well.
+engine = create_engine("sqlite:///tip.db")
+SQLModel.metadata.create_all(engine)
 
-We are working on the TIP 2.0 project and would like to use the Testbox On Demand API. In order to access this API, we require an authorization token, which we understand is generated via the Leap API.
+def insert_data():
+    with Session(engine) as session:
+        new_remediation = TipControlRemediation(
+            tip_gts_id="12345",
+            tip_remediation_data='{"key": "value"}',
+            tip_version="1.0",
+            active=True
+        )
+        session.add(new_remediation)
+        session.commit()
 
-We have thoroughly reviewed the API documentation and the relevant Confluence pages. It seems that once you provide the necessary grant_type details, we should be able to obtain the required auth token to access all On Demand APIs.
+def retrieve_data(tip_gts_id: str):
+    with Session(engine) as session:
+        statement = select(TipControlRemediation).where(TipControlRemediation.tip_gts_id == tip_gts_id)
+        remediation = session.exec(statement).first()
+        return remediation
 
-Could you kindly share the appropriate grant_type values that would grant access to the vmaas scopes? This will help us proceed with our integration smoothly.
-
-Thank you for your assistance, and we look forward to your prompt response.
+insert_data()
+result = retrieve_data("12345")
+print(result.tip_remediation_data)
