@@ -110,8 +110,3 @@ def insert_tip_inventory(
     except Exception as e:
         print(f"Error reading TipInventory: {e}")
         return []
-
-“I’ve successfully integrated the VMware API into the pipeline and completed testing. I’m able to call the API to initiate VM workflow creation and delete the VM after our tasks are done. However, we’re encountering issues with unavailable hostnames. I’ve asked Pankaj for a response. Once that’s resolved, we can proceed with integrating into the OS pipeline. Please refer to the pipeline output for details.”
-
-
-
