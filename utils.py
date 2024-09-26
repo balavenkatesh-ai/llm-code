@@ -1,32 +1,18 @@
-import { spawn } from 'child_process';
-import * as fs from 'fs';
+import pytest
+from fastapi.testclient import TestClient
+from app.main import app  # Assuming your FastAPI app is in main.py
 
-const runPY = () => {
-  const pythonProcess = spawn('python', ['-W', 'ignore', '/path/to/tip_workflow.py']);
+client = TestClient(app)
 
-  pythonProcess.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
+# Test for the /tip/control_remediation/{gts_id} endpoint
+def test_get_mq_controls_route():
+    gts_id = "sample_gts_id"  # Replace with a valid ID
+    response = client.get(f"/tip/control_remediation/{gts_id}")
+    assert response.status_code == 200
+    assert response.json() is not None  # Add more assertions based on expected JSON structure
 
-  pythonProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-  });
-
-  pythonProcess.on('close', (code) => {
-    console.log(`Python script exited with code ${code}`);
-    if (code === 0) {
-      // Process success, proceed with file reading
-      fs.readFile('table.txt', 'utf8', (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        console.log(data);
-      });
-    } else {
-      console.error('Python script failed.');
-    }
-  });
-};
-
-runPY();
+# Test for the /tip/control_remediation endpoint
+def test_get_all_tip_controls_route():
+    response = client.get("/tip/control_remediation/")
+    assert response.status_code == 200
+    assert response.json() is not None  # Add more assertions based on expected JSON structure
