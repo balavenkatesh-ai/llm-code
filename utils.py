@@ -1,53 +1,46 @@
-import pytest
-from fastapi.testclient import TestClient
-from app.main import app  # Assuming your FastAPI app is in main.py
+import unittest
+from unittest.mock import MagicMock
+from your_module import get_tip_inventory_by_ci_id, TipInventory  # adjust imports accordingly
 
-client = TestClient(app)
+class TestTipInventoryMethods(unittest.TestCase):
+    def setUp(self):
+        # Mock database session
+        self.mock_db_session = MagicMock()
 
-# Test for the /tip/control_remediation/{gts_id} endpoint
-def test_get_mq_controls_route():
-    gts_id = "sample_gts_id"  # Replace with a valid ID
-    response = client.get(f"/tip/control_remediation/{gts_id}")
-    assert response.status_code == 200
-    assert response.json() is not None  # Add more assertions based on expected JSON structure
+    def test_get_tip_inventory_by_ci_id_success(self):
+        # Mock data to be returned by the query
+        mock_inventory = [TipInventory(id=1, ci_id=1001, status='active'), 
+                          TipInventory(id=2, ci_id=1001, status='active')]
+        
+        # Simulate the query result
+        self.mock_db_session.query().filter().order_by().all.return_value = mock_inventory
+        
+        # Call the function
+        result = get_tip_inventory_by_ci_id(ci_id=1001, status='active', db_session=self.mock_db_session)
+        
+        # Assert that the result matches the mocked data
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0].ci_id, 1001)
 
-# Test for the /tip/control_remediation endpoint
-def test_get_all_tip_controls_route():
-    response = client.get("/tip/control_remediation/")
-    assert response.status_code == 200
-    assert response.json() is not None  # Add more assertions based on expected JSON structure
-    
-import pytest
-import requests
+    def test_get_tip_inventory_by_ci_id_no_results(self):
+        # Simulate no results
+        self.mock_db_session.query().filter().order_by().all.return_value = []
+        
+        # Call the function
+        result = get_tip_inventory_by_ci_id(ci_id=1002, status='inactive', db_session=self.mock_db_session)
+        
+        # Assert that the result is an empty list
+        self.assertEqual(result, [])
 
-BASE_URL = "http://localhost:8000"  # replace with your API base URL
+    def test_get_tip_inventory_by_ci_id_exception(self):
+        # Simulate an exception being raised
+        self.mock_db_session.query.side_effect = Exception("Database Error")
+        
+        # Call the function and handle the exception
+        result = get_tip_inventory_by_ci_id(ci_id=1003, status='active', db_session=self.mock_db_session)
+        
+        # Assert that the result is an empty list in case of exception
+        self.assertEqual(result, [])
 
-@pytest.fixture(scope='session')
-def auth_token():
-    """Fixture to authenticate and return the token."""
-    url = f"{BASE_URL}/tip/api/v1/auth/login"
-    payload = {
-        "userId": "g.adopacc.001.dev",  # replace with valid userId
-        "password": "SCBFirewallpace2024$"  # replace with valid password
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    
-    response = requests.post(url, json=payload, headers=headers)
-    assert response.status_code == 200, "Authentication failed"
-    
-    token = response.json().get("data").get("access_token")
-    return token
-
-def test_get_authenticated_api(auth_token):
-    """Test authenticated API with the token."""
-    url = f"{BASE_URL}/tip/api/v1/tip/control_remediation/GTS-4575"
-    headers = {
-        "Authorization": f"Bearer {auth_token}",
-        "Accept": "application/json"
-    }
-
-    response = requests.get(url, headers=headers)
-    assert response.status_code == 200, f"Failed with status {response.status_code}"
-    assert response.json() is not None
+if __name__ == '__main__':
+    unittest.main()
