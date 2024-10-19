@@ -48,3 +48,6 @@ def get_tip_gts_by_gts_id_logic(gts_id: Optional[str], component_name: Optional[
         raise ValueError("Either 'gts_id' or 'component_name' must be provided")
 
     return query.all()
+    
+ the Pydantic model
+        serialized_result = [TipGtsResponse.from_orm(item) for item in result]
