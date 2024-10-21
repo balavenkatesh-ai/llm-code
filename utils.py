@@ -1,53 +1,36 @@
-from fastapi import FastAPI, Depends, Query, HTTPException
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from typing import Optional, List
+from fastapi import HTTPException
 
-app = FastAPI()
+def update_component_details(gts_id: str, update_data: UpdateComponentDetails, db_session: Session):
+    # Fetch the tip_component_details record using gts_id
+    tip_component_details = db_session.query(TipGts).filter(TipGts.gts_id == gts_id).one_or_none()
 
-# Response structure model
-class APIResponse(BaseModel):
-    data: Optional[Any] = None
-    message: str
-    status_code: int
+    if not tip_component_details:
+        # If the record is not found, raise an HTTPException
+        raise HTTPException(status_code=404, detail="tip_component_details record not found")
 
-@app.get("/tip/component_details", summary="Get TIP Component details by GTS ID or Component Name")
-async def get_tip_gts_by_gts_id(
-    gts_id: Optional[str] = Query(None, description="GTS ID to filter the components"),
-    component_name: Optional[str] = Query(None, description="Component name to filter the components"),
-    db_session: Session = Depends(get_db_session)
-):
-    """
-    Retrieve TIP component details by either GTS ID or Component Name.
-    At least one of them is required.
-    """
-    try:
-        result = get_tip_gts_by_gts_id_logic(gts_id, component_name, db_session)
-        if not result:
-            return JSONResponse(status_code=404, content=APIResponse(
-                data=None, message="No records found", status_code=404).dict())
-        
-        return JSONResponse(status_code=200, content=APIResponse(
-            data=result, message="Success", status_code=200).dict())
-    
-    except ValueError as e:
-        return JSONResponse(status_code=400, content=APIResponse(
-            data=None, message=str(e), status_code=400).dict())
-    except Exception as e:
-        return JSONResponse(status_code=500, content=APIResponse(
-            data=None, message=f"An error occurred: {e}", status_code=500).dict())
+    # Update fields only if the data is provided (this ensures partial updates)
+    if update_data.tip_availability is not None:
+        tip_component_details.tip_availability = update_data.tip_availability
+    if update_data.scanner_name is not None:
+        tip_component_details.scanner_name = update_data.scanner_name
+    if update_data.tip_component_name is not None:
+        tip_component_details.tip_component_name = update_data.tip_component_name
+    if update_data.config_file_mapping is not None:
+        tip_component_details.config_file_mapping = update_data.config_file_mapping
+    if update_data.control_id_mapping is not None:
+        tip_component_details.control_id_mapping = update_data.control_id_mapping
+    if update_data.unmapped_id_mapping is not None:
+        tip_component_details.unmapped_id_mapping = update_data.unmapped_id_mapping
+    if update_data.qualys_config is not None:
+        tip_component_details.qualys_config = update_data.qualys_config
 
-def get_tip_gts_by_gts_id_logic(gts_id: Optional[str], component_name: Optional[str], db_session) -> List[TipGts]:
-    query = db_session.query(TipGts)
+    # Commit the updates to the database
+    db_session.commit()
+    db_session.refresh(tip_component_details)
 
-    if gts_id:
-        query = query.filter(TipGts.gts_id == gts_id)
-    elif component_name:
-        query = query.filter(TipGts.component_name == component_name)
-    else:
-        raise ValueError("Either 'gts_id' or 'component_name' must be provided")
-
-    return query.all()
-    
- the Pydantic model
-        serialized_result = [TipGtsResponse.from_orm(item) for item in result]
+    # Return a success message with updated data
+    return {
+        "message": "Updated successfully",
+        "tip_component_details": tip_component_details
+    }
