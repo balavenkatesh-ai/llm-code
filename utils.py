@@ -34,3 +34,19 @@ def update_component_details(gts_id: str, update_data: UpdateComponentDetails, d
         "message": "Updated successfully",
         "tip_component_details": tip_component_details
     }
+    
+    
+    from pydantic import BaseModel
+from typing import List, Dict, Any, Optional
+
+class UpdateComponentDetails(BaseModel):
+    tip_availability: Optional[str] = None
+    scanner_name: Optional[str] = None
+    tip_component_name: Optional[str] = None
+    config_file_mapping: Optional[List[Dict[Any, Any]]] = None
+    control_id_mapping: Optional[List[Dict[Any, Any]]] = None
+    unmapped_id_mapping: Optional[List[Dict[Any, Any]]] = None
+    qualys_config: Optional[List[Dict[Any, Any]]] = None
+
+    class Config:
+        orm_mode = True
