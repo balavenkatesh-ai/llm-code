@@ -1,52 +1,207 @@
+# Import statements
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from pydantic import BaseModel
+from typing import Optional
+import datetime
 
-def update_component_details(gts_id: str, update_data: UpdateComponentDetails, db_session: Session):
-    # Fetch the tip_component_details record using gts_id
-    tip_component_details = db_session.query(TipGts).filter(TipGts.gts_id == gts_id).one_or_none()
+# Assuming these are defined elsewhere
+from .database import get_db_session, engine
+from .models import TipControlRemediation
+from . import app_constants
 
-    if not tip_component_details:
-        # If the record is not found, raise an HTTPException
-        raise HTTPException(status_code=404, detail="tip_component_details record not found")
+# Pydantic models
+class TipControlRemediationBase(BaseModel):
+    tip_gts_id: str
+    remediation_data: dict
+    tip_version: str
+    active: bool = True
 
-    # Update fields only if the data is provided (this ensures partial updates)
-    if update_data.tip_availability is not None:
-        tip_component_details.tip_availability = update_data.tip_availability
-    if update_data.scanner_name is not None:
-        tip_component_details.scanner_name = update_data.scanner_name
-    if update_data.tip_component_name is not None:
-        tip_component_details.tip_component_name = update_data.tip_component_name
-    if update_data.config_file_mapping is not None:
-        tip_component_details.config_file_mapping = update_data.config_file_mapping
-    if update_data.control_id_mapping is not None:
-        tip_component_details.control_id_mapping = update_data.control_id_mapping
-    if update_data.unmapped_id_mapping is not None:
-        tip_component_details.unmapped_id_mapping = update_data.unmapped_id_mapping
-    if update_data.qualys_config is not None:
-        tip_component_details.qualys_config = update_data.qualys_config
+class TipControlRemediationCreate(TipControlRemediationBase):
+    pass
 
-    # Commit the updates to the database
-    db_session.commit()
-    db_session.refresh(tip_component_details)
+class TipControlRemediationUpdate(BaseModel):
+    remediation_data: Optional[dict] = None
+    tip_version: Optional[str] = None
+    active: Optional[bool] = None
 
-    # Return a success message with updated data
-    return {
-        "message": "Updated successfully",
-        "tip_component_details": tip_component_details
-    }
-    
-    
-    from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
-
-class UpdateComponentDetails(BaseModel):
-    tip_availability: Optional[str] = None
-    scanner_name: Optional[str] = None
-    tip_component_name: Optional[str] = None
-    config_file_mapping: Optional[List[Dict[Any, Any]]] = None
-    control_id_mapping: Optional[List[Dict[Any, Any]]] = None
-    unmapped_id_mapping: Optional[List[Dict[Any, Any]]] = None
-    qualys_config: Optional[List[Dict[Any, Any]]] = None
+class TipControlRemediationResponse(TipControlRemediationBase):
+    id: int
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
 
     class Config:
         orm_mode = True
+
+# Router
+api_router = APIRouter()
+
+# POST endpoint
+@api_router.post(
+    "/tip/control-remediation",
+    response_model=TipControlRemediationResponse,
+    summary="Create New TIP Control Remediation",
+    tags=[app_constants.APIDocs.TIP_CONTROL_REMEDIATION],
+)
+async def create_tip_control_remediation(
+    remediation: TipControlRemediationCreate,
+    db: Session = Depends(get_db_session)
+):
+    return await save_to_remediation_table(remediation, db)
+
+# PATCH endpoint
+@api_router.patch(
+    "/tip/control-remediation/{tip_gts_id}",
+    response_model=TipControlRemediationResponse,
+    summary="Update TIP Control Remediation",
+    tags=[app_constants.APIDocs.TIP_CONTROL_REMEDIATION],
+)
+async def update_tip_control_remediation(
+    tip_gts_id: str,
+    remediation: TipControlRemediationUpdate,
+    db: Session = Depends(get_db_session)
+):
+    return await update_remediation_table(tip_gts_id, remediation, db)
+
+# Database operations
+async def save_to_remediation_table(remediation: TipControlRemediationCreate, db: Session) -> TipControlRemediation:
+    """
+    Save the TIP Control Remediation data to the database.
+    """
+    try:
+        db_remediation = TipControlRemediation(**remediation.dict())
+        db.add(db_remediation)
+        db.commit()
+        db.refresh(db_remediation)
+        return db_remediation
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error saving data: {str(e)}")
+
+async def update_remediation_table(tip_gts_id: str, remediation: TipControlRemediationUpdate, db: Session) -> TipControlRemediation:
+    """
+    Update the TIP Control Remediation data in the database.
+    """
+    try:
+        db_remediation = db.query(TipControlRemediation).filter(TipControlRemediation.tip_gts_id == tip_gts_id).first()
+        if not db_remediation:
+            raise HTTPException(status_code=404, detail="TIP Control Remediation not found")
+        
+        update_data = remediation.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_remediation, key, value)
+        
+        db_remediation.updated_at = datetime.datetime.utcnow()
+        db.commit()
+        db.refresh(db_remediation)
+        return db_remediation
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error updating data: {str(e)}")
+
+# Assuming you have a SQLAlchemy model defined like this:
+# class TipControlRemediation(Base):
+#     __tablename__ = "tip_control_remediation"
+#
+#     id = Column(Integer, primary_key=True, index=True)
+#     tip_gts_id = Column(String, unique=True, index=True)
+#     remediation_data = Column(JSON)
+#     tip_version = Column(String)
+#     active = Column(Boolean, default=True)
+#     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+#     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+
+@api_router.post(
+    "/tip/control-remediation",
+    summary="Create New TIP Control Remediation",
+    tags=[app_constants.APIDocs.TIP_CONTROL_REMEDIATION],
+    responses={200: {"message": "TIP Control Remediation Successfully Created in the Database"}}
+)
+async def save_tip_control_remediation(
+    remediation_request: tip_control_remediation.TipControlRemediationRequest,
+    db_session: Session = Depends(get_db_session)
+):
+    """Create New TIP Control Remediation"""
+    try:
+        await tip_control_remediation.save_to_remediation_table(remediation_request)
+        return {"message": "TIP Control Remediation Successfully Created in the Database"}
+    except Exception as e:
+        return {"message": str(e)}
+```
+
+Now, let's implement the `save_to_remediation_table` function:
+
+```python
+async def save_to_remediation_table(remediation_request: TipControlRemediationRequest) -> None:
+    """
+    Save the TIP Control Remediation data to the database.
+
+    :param remediation_request: The TIP Control Remediation request containing remediation details.
+    """
+    try:
+        with Session(engine) as session:
+            tip_remediation_data = TipControlRemediation(
+                request_id=str(correlation_id.get()),
+                tip_gts_id=remediation_request.tip_gts_id,
+                remediation_data=remediation_request.remediation_data,
+                tip_version=remediation_request.tip_version,
+                active=remediation_request.active
+            )
+            session.add(tip_remediation_data)
+            session.commit()
+        print("Successfully saved data into tip_control_remediation table")
+    except Exception as e:
+        print(f"Error on saving into tip_control_remediation table: {e}")
+        raise
+```
+
+For the patch endpoint, we can create a similar structure:
+
+```python
+@api_router.patch(
+    "/tip/control-remediation/{tip_gts_id}",
+    summary="Update TIP Control Remediation",
+    tags=[app_constants.APIDocs.TIP_CONTROL_REMEDIATION],
+    responses={200: {"message": "TIP Control Remediation Successfully Updated in the Database"}}
+)
+async def update_tip_control_remediation(
+    tip_gts_id: str,
+    remediation_request: tip_control_remediation.TipControlRemediationUpdateRequest,
+    db_session: Session = Depends(get_db_session)
+):
+    """Update TIP Control Remediation"""
+    try:
+        await tip_control_remediation.update_remediation_table(tip_gts_id, remediation_request)
+        return {"message": "TIP Control Remediation Successfully Updated in the Database"}
+    except Exception as e:
+        return {"message": str(e)}
+```
+
+And the corresponding `update_remediation_table` function:
+
+```python
+async def update_remediation_table(tip_gts_id: str, remediation_request: TipControlRemediationUpdateRequest) -> None:
+    """
+    Update the TIP Control Remediation data in the database.
+
+    :param tip_gts_id: The ID of the TIP Control Remediation to update.
+    :param remediation_request: The TIP Control Remediation request containing updated remediation details.
+    """
+    try:
+        with Session(engine) as session:
+            tip_remediation_data = session.query(TipControlRemediation).filter_by(tip_gts_id=tip_gts_id).first()
+            if tip_remediation_data:
+                tip_remediation_data.remediation_data = remediation_request.remediation_data
+                tip_remediation_data.tip_version = remediation_request.tip_version
+                tip_remediation_data.active = remediation_request.active
+                session.commit()
+                print(f"Successfully updated data in tip_control_remediation table for tip_gts_id: {tip_gts_id}")
+            else:
+                raise Exception(f"No TIP Control Remediation found for tip_gts_id: {tip_gts_id}")
+    except Exception as e:
+        print(f"Error on updating tip_control_remediation table: {e}")
+        raise
+```
