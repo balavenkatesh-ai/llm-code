@@ -205,3 +205,46 @@ async def update_remediation_table(tip_gts_id: str, remediation_request: TipCont
         print(f"Error on updating tip_control_remediation table: {e}")
         raise
 ```
+
+
+
+Good day!
+
+Firstly, I want to express how grateful I am to be a part of the TIP Squad, and especially to be part of Arun’s team. I truly appreciate both of you for your guidance and support throughout my journey here.
+
+When I first onboarded to the TIP team, Bhuvi and Rafi were instrumental in helping me understand the TIP workflow, and from there, I was able to initiate the TIP API development independently. I am happy to share that we’ve successfully deployed it into staging. Moreover, as we discussed in our recent calls, I have more ideas to enhance the API development. For example, we could pass a configuration file to generate the PR description, with all the underlying operations handled by the API. This includes scanning and fixing misconfigurations automatically, either through the API or a UI, as per your suggestion.
+
+Now, to address the specific points you outlined:
+
+1, 2, 3, 6, 7 – These points emphasize learning new technologies, and I’m excited and open to acquiring new skills. However, before moving forward, I’d like to align these goals with my current skillset to ensure we are building on a solid foundation:
+
+Python
+API Development – FastAPI, Django, Flask
+Databases – PostgreSQL, MySQL
+Machine Learning
+Deep Learning
+Generative AI – LLM Models, Retrieval-Augmented Generation (RAG), Vector Databases
+Frameworks – Langchain, LlamaIndex
+I believe these skills will contribute to my quick adoption of any new technology necessary for the team.
+
+Point 4: I am already taking ownership of API development, deployment, and IaC setup. I’m happy to continue taking responsibility for any new product initiatives, and as we discussed, I’m eager to contribute further to our API roadmap.
+
+Point 5: I’m well-versed in AI/ML areas, and with sufficient hardware resources and datasets, I’m ready to start working on enhancing this area. It’s something I’m particularly excited about and ready to dive deeper into.
+
+Point 8: I’ve already begun preparing myself to present tasks and ideas more professionally. Communication is a critical skill, and I’m continuously improving it. I’ve learned a great deal from the team, particularly through our 1:30 standup calls. I’m thankful for all the opportunities to grow alongside such talented colleagues.
+
+One point I’d like to bring up that wasn’t discussed in our conversation:
+
+Agile Methodology:
+Currently, we aren't following Agile methodology effectively. While we do have some stories in the backlog, we are missing key elements such as sprint planning and retrospective meetings. However, I’m encouraged by Bhuvi’s assurance that in 2025, we’ll start adopting Agile practices more rigorously, including task assignments through ADO work items instead of verbal task allocation. This will bring numerous benefits, such as:
+
+Implementing high-quality code with proper test cases based on acceptance criteria.
+A clear understanding of requirements, allowing for stronger system designs.
+Reducing the need for long daily standups and enabling more effective planning of ad-hoc tasks.
+Avoiding last-minute rewrites by promoting proper line-by-line PR reviews and approvals.
+I’m confident that with these improvements, you will see a "Bala Venkatesh 2.0" in 2025. I'm working diligently to align with these goals and contribute to the team's success.
+
+Thank you once again for your continued support. I look forward to your feedback and any further guidance. And, of course, I would love to hear a few words from my first and foremost mentor, Arun!
+
+Best regards,
+Bala Venkatesh
